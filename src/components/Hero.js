@@ -207,7 +207,7 @@ const Hero = () => {
                     
                     {/* Google Drive Option */}
                     <motion.a
-                      href="https://drive.google.com/file/d/1L3G3j20C3A-78C5E3QdBBV7lo33Xs6gC/view?usp=sharing"
+                      href="https://drive.google.com/file/d/1Nfws5GOBLGy6syCr-aX9y0sXuWq0kuc9/view?usp=sharing"
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => setShowCVDropdown(false)}

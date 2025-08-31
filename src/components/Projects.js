@@ -98,6 +98,38 @@ const Projects = () => {
       icon: SiNextdotjs,
       color: "indigo",
       gradient: "from-indigo-500 to-purple-600"
+    },
+    {
+      title: "MadrasaPro - Educational Platform",
+      description: "Developed a comprehensive frontend for an Arabic educational platform to streamline student learning and assessment workflows. Designed a dynamic student dashboard displaying real-time data (scores, progress, learning styles, recent activities) fetched from backend APIs, with responsive UI and progress tracking. Built an interactive test-taking system with timers, question navigation, flagging, and submission features, supporting multiple subjects and difficulty levels. Created a fully responsive interface with Arabic RTL support, modern animations, and mobile-first design.",
+      type: "Web Site",
+      link: "https://madrasapro.vercel.app",
+      technologies: ["React.js", "Tailwind CSS", "Axios", "React Router", "React Query", "Formik", "Yup", "Web Speech API"],
+      features: [
+        "Dynamic student dashboard with real-time data",
+        "Interactive test-taking system",
+        "Arabic RTL support",
+        "Responsive design"
+      ],
+      icon: HiCode,
+      color: "green",
+      gradient: "from-green-500 to-teal-500"
+    },
+    {
+      title: "HIRSTO – Integrated Health Platform",
+      description: "Built a unified healthcare platform connecting doctors, pharmacies, and insurers with patient-facing experiences. Implemented AI-powered pre-diagnosis, secure telehealth, EMR features, and smart booking. Integrated e-prescriptions, pharmacy fulfillment, and drug interaction checks for safe medication workflows. Automated insurance verification, claims processing, and approval workflows with analytics dashboards. Delivered a consistent, responsive UI/UX with shared navbar, hero gradient, and reusable components.",
+      type: "Web Site",
+      link: "https://hirsto.vercel.app/",
+      technologies: ["React.js", "TypeScript", "Tailwind CSS", "Framer Motion", "React Router", "React Query"],
+      features: [
+        "AI-powered pre-diagnosis",
+        "Secure telehealth and EMR",
+        "E-prescriptions and pharmacy integration",
+        "Insurance verification and claims processing"
+      ],
+      icon: FaRobot,
+      color: "red",
+      gradient: "from-red-500 to-pink-500"
     }
   ];
 
