@@ -7,8 +7,9 @@ import { SiTailwindcss, SiNextdotjs, SiRedux } from 'react-icons/si';
 
 const Projects = () => {
   const [ref, inView] = useInView({
-    threshold: 0.2,
-    triggerOnce: true
+    threshold: 0.1,
+    triggerOnce: true,
+    rootMargin: '0px 0px -10% 0px'
   });
 
   const containerVariants = {
@@ -174,7 +175,7 @@ const Projects = () => {
               >
                 <div className={`h-2 bg-gradient-to-r ${project.gradient}`}></div>
                 
-                <div className="p-8">
+                <div className="p-6 md:p-8">
                   <div className="flex items-start justify-between mb-6">
                     <div className={`w-12 h-12 bg-gradient-to-r ${project.gradient} rounded-xl flex items-center justify-center text-white`}>
                       <project.icon className="text-xl" />

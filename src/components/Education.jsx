@@ -5,8 +5,9 @@ import { HiAcademicCap, HiCalendar, HiStar } from 'react-icons/hi';
 
 const Education = () => {
   const [ref, inView] = useInView({
-    threshold: 0.3,
-    triggerOnce: true
+    threshold: 0.1,
+    triggerOnce: true,
+    rootMargin: '0px 0px -10% 0px'
   });
 
   const containerVariants = {

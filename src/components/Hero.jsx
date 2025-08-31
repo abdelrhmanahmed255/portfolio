@@ -181,7 +181,7 @@ const Hero = () => {
                       scale: showCVDropdown ? 1 : 0.95,
                     }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
-                    className={`absolute bottom-full left-0 mb-2 w-72 bg-white/95 backdrop-blur-lg rounded-xl shadow-2xl border border-white/20 ${
+                    className={`absolute bottom-full left-0 mb-2 w-64 md:w-72 bg-white/95 backdrop-blur-lg rounded-xl shadow-2xl border border-white/20 ${
                       showCVDropdown ? 'pointer-events-auto' : 'pointer-events-none'
                     }`}
                     style={{ 

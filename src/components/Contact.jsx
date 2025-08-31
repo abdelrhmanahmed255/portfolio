@@ -7,8 +7,9 @@ import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [ref, inView] = useInView({
-    threshold: 0.2,
-    triggerOnce: true
+    threshold: 0.1,
+    triggerOnce: true,
+    rootMargin: '0px 0px -10% 0px'
   });
 
   const [formData, setFormData] = useState({

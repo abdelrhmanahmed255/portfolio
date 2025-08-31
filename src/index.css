@@ -9,9 +9,110 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Mobile-specific fixes */
+@media (max-width: 768px) {
+  * {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+
+  /* Ensure smooth scrolling works on mobile */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Fix for mobile scrolling and animations */
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ensure sections are visible on mobile */
+  section {
+    min-height: auto;
+    padding: 2rem 0;
+    opacity: 1 !important; /* Force visibility */
+    transform: none !important; /* Reset transforms */
+  }
+
+  /* Fix for mobile scrolling and animations */
+  .mobile-fix {
+    will-change: transform;
+  }
+
+  /* Ensure motion components are visible */
+  [data-projection-id] {
+    opacity: 1 !important;
+  }
+
+  /* About section specific fixes */
+  #about {
+    overflow-x: hidden;
+  }
+
+  #about .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Mobile menu improvements */
+  .mobile-menu-container {
+    position: relative;
+    z-index: 60;
+  }
+  
+  /* Prevent body scroll when mobile menu is open */
+  body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+  
+  /* Smooth scrolling for navigation */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Custom scrollbar for mobile menu */
+  .mobile-menu-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .mobile-menu-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+  }
+  
+  .mobile-menu-scroll::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 2px;
+  }
+  
+  .mobile-menu-scroll::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+  
+  /* Floating button styles */
+  .floating-menu-btn {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  /* Ensure floating button doesn't interfere with content */
+  .floating-menu-btn {
+    pointer-events: auto;
+  }
+  
+  /* Smooth show/hide animations */
+  .floating-menu-btn {
+    transform-origin: center;
+  }
 }
