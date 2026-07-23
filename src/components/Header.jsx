@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { HiMenu, HiX, HiCode } from 'react-icons/hi';
-import { FaLaptopCode } from 'react-icons/fa';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -82,7 +81,7 @@ const Header = () => {
   const navItems = [
     { name: 'Home', id: 'hero' },
     { name: 'About', id: 'about' },
-    { name: 'Education', id: 'education' },
+    { name: 'Experience', id: 'education' },
     { name: 'Projects', id: 'projects' },
     { name: 'Skills', id: 'skills' },
     { name: 'Contact', id: 'contact' },
@@ -105,29 +104,35 @@ const Header = () => {
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center space-x-2 cursor-pointer group"
+            className="flex items-center space-x-3 cursor-pointer group"
             onClick={() => scrollToSection('hero')}
           >
             <div className="relative">
               <motion.div
-                className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg"
-                whileHover={{ rotate: 180 }}
+                className="w-11 h-11 rounded-full overflow-hidden shadow-lg border-2 border-transparent"
+                whileHover={{ 
+                  borderColor: scrolled ? 'rgba(59, 130, 246, 0.5)' : 'rgba(255, 255, 255, 0.3)'
+                }}
                 transition={{ duration: 0.3 }}
               >
-                <FaLaptopCode className="text-white text-xl" />
+                <img 
+                  src="/logo frontend.png" 
+                  alt="AA Logo"
+                  className="w-full h-full object-cover"
+                />
               </motion.div>
               {/* Animated dot indicator */}
               <motion.div 
-                className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full"
+                className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-white"
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
             </div>
             <div className="hidden sm:block">
-              <div className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Portfolio
+              <div className={`text-lg font-bold ${scrolled ? 'text-gray-800' : 'text-white'}`}>
+                Abdelrhman
               </div>
-              <div className="text-xs text-gray-500 -mt-1">Frontend Dev</div>
+              <div className={`text-xs -mt-0.5 ${scrolled ? 'text-gray-500' : 'text-gray-300'}`}>Full Stack Developer</div>
             </div>
           </motion.div>
 
@@ -250,12 +255,16 @@ const Header = () => {
             <div className="bg-white border-b border-gray-200 p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <FaLaptopCode className="text-white text-xl" />
+                  <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg">
+                    <img 
+                      src="/logo frontend.png" 
+                      alt="AA Logo"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900">Portfolio</h3>
-                    <p className="text-sm text-gray-500">Frontend Developer</p>
+                    <h3 className="text-lg font-bold text-gray-900">Abdelrhman</h3>
+                    <p className="text-sm text-gray-500">Full Stack Developer</p>
                   </div>
                 </div>
                 <button

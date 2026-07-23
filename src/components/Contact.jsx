@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { HiMail, HiPhone, HiLocationMarker, HiPaperAirplane, HiChatAlt2, HiSparkles } from 'react-icons/hi';
 import { FaLinkedin, FaGithub, FaWhatsapp } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
 
 const Contact = () => {
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-    rootMargin: '0px 0px -10% 0px'
-  });
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,6 +14,15 @@ const Contact = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+
+  useEffect(() => {
+    if (submitStatus) {
+      const timer = setTimeout(() => {
+        setSubmitStatus(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [submitStatus]);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -59,40 +61,6 @@ const Contact = () => {
     setIsSubmitting(false);
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 60, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { scale: 0.9, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
-  };
-
   const contactInfo = [
     {
       icon: HiMail,
@@ -119,53 +87,47 @@ const Contact = () => {
     }
   ];
 
-  const FloatingElement = ({ delay = 0, size = "w-4 h-4", position = "top-20 left-20" }) => (
-    <motion.div
-      className={`absolute ${position} ${size} bg-blue-200 rounded-full opacity-30`}
-      animate={{
-        y: [-20, 20, -20],
-        x: [-10, 10, -10],
-        scale: [1, 1.2, 1],
-      }}
-      transition={{
-        duration: 4 + delay,
-        repeat: Infinity,
-        ease: "easeInOut",
-        delay: delay
-      }}
-    />
-  );
-
   return (
     <section id="contact" className="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {submitStatus && (
+          <motion.div
+            initial={{ opacity: 0, x: 100, y: 0 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            exit={{ opacity: 0, x: 100, y: 0 }}
+            className={`fixed top-24 right-6 z-50 p-4 rounded-xl shadow-2xl flex items-center gap-3 ${
+              submitStatus === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`}
+          >
+            {submitStatus === 'success' ? <HiSparkles className="text-xl" /> : null}
+            <span className="font-semibold">
+              {submitStatus === 'success' ? 'Message sent successfully!' : 'Failed to send message. Please try again.'}
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Floating background elements */}
       <div className="absolute inset-0">
-        <FloatingElement delay={0} size="w-3 h-3" position="top-20 left-[10%]" />
-        <FloatingElement delay={1} size="w-4 h-4" position="top-40 right-[15%]" />
-        <FloatingElement delay={2} size="w-2 h-2" position="top-60 left-[20%]" />
-        <FloatingElement delay={1.5} size="w-5 h-5" position="bottom-40 right-[10%]" />
-        <FloatingElement delay={0.5} size="w-3 h-3" position="bottom-60 left-[15%]" />
         <div className="absolute top-40 left-20 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
         <div className="absolute bottom-40 right-20 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <motion.div
-          ref={ref}
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="max-w-7xl mx-auto"
-        >
+        <div className="max-w-7xl mx-auto">
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <motion.span 
-              className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium mb-6"
-              whileHover={{ scale: 1.05 }}
-            >
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <span className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium mb-6">
               <HiChatAlt2 className="mr-2" />
               Let's Work Together
-            </motion.span>
+            </span>
             <h2 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
               Get In{' '}
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
@@ -184,27 +146,40 @@ const Contact = () => {
             {contactInfo.map((info, index) => (
               <motion.div
                 key={index}
-                variants={cardVariants}
-                whileHover={{ y: -8, boxShadow: "0 25px 50px rgba(0,0,0,0.15)" }}
-                className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center group"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -8 }}
+                className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center relative overflow-hidden group"
               >
+                {/* Hover gradient border */}
+                <div className={`absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r ${
+                  info.color === 'blue' ? 'from-blue-500 to-blue-600' :
+                  info.color === 'green' ? 'from-green-500 to-green-600' :
+                  'from-purple-500 to-purple-600'
+                } transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`} />
+
                 <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center bg-gradient-to-r ${
                   info.color === 'blue' ? 'from-blue-500 to-blue-600' :
                   info.color === 'green' ? 'from-green-500 to-green-600' :
                   'from-purple-500 to-purple-600'
-                } transform group-hover:scale-110 transition-transform duration-300`}>
+                }`}>
                   <info.icon className="text-white text-2xl" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-800 mb-2">{info.title}</h3>
                 <p className="text-gray-500 text-sm mb-4">{info.description}</p>
                 {info.link ? (
-                  <motion.a
+                  <a
                     href={info.link}
-                    whileHover={{ scale: 1.05 }}
-                    className={`inline-block text-${info.color}-600 font-semibold hover:text-${info.color}-700 transition-colors`}
+                    className={`inline-block font-semibold transition-colors ${
+                      info.color === 'blue' ? 'text-blue-600 hover:text-blue-700' :
+                      info.color === 'green' ? 'text-green-600 hover:text-green-700' :
+                      'text-purple-600 hover:text-purple-700'
+                    }`}
                   >
                     {info.value}
-                  </motion.a>
+                  </a>
                 ) : (
                   <p className="text-gray-700 font-semibold">{info.value}</p>
                 )}
@@ -214,7 +189,12 @@ const Contact = () => {
 
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Left side - Contact Form */}
-            <motion.div variants={itemVariants}>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <div className="bg-white rounded-3xl p-8 shadow-2xl border border-gray-100 relative overflow-hidden">
                 {/* Background decoration */}
                 <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full -translate-y-20 translate-x-20"></div>
@@ -235,10 +215,7 @@ const Contact = () => {
                   
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-                          Your Name *
-                        </label>
+                      <div className="relative pt-2">
                         <input
                           type="text"
                           id="name"
@@ -246,14 +223,17 @@ const Contact = () => {
                           value={formData.name}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white"
-                          placeholder="John Doe"
+                          className="peer w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white placeholder-transparent focus:shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+                          placeholder="Your Name *"
                         />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                          Email Address *
+                        <label
+                          htmlFor="name"
+                          className="absolute left-4 -top-1 text-gray-500 text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-5 peer-focus:-top-1 peer-focus:text-sm peer-focus:text-blue-600 bg-transparent peer-focus:bg-white peer-focus:px-1 rounded-md"
+                        >
+                          Your Name *
                         </label>
+                      </div>
+                      <div className="relative pt-2">
                         <input
                           type="email"
                           id="email"
@@ -261,16 +241,19 @@ const Contact = () => {
                           value={formData.email}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white"
-                          placeholder="john@example.com"
+                          className="peer w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white placeholder-transparent focus:shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+                          placeholder="Email Address *"
                         />
+                        <label
+                          htmlFor="email"
+                          className="absolute left-4 -top-1 text-gray-500 text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-5 peer-focus:-top-1 peer-focus:text-sm peer-focus:text-blue-600 bg-transparent peer-focus:bg-white peer-focus:px-1 rounded-md"
+                        >
+                          Email Address *
+                        </label>
                       </div>
                     </div>
 
-                    <div>
-                      <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 mb-2">
-                        Subject *
-                      </label>
+                    <div className="relative pt-2">
                       <input
                         type="text"
                         id="subject"
@@ -278,15 +261,18 @@ const Contact = () => {
                         value={formData.subject}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white"
-                        placeholder="Project Discussion"
+                        className="peer w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white placeholder-transparent focus:shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+                        placeholder="Subject *"
                       />
+                      <label
+                        htmlFor="subject"
+                        className="absolute left-4 -top-1 text-gray-500 text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-5 peer-focus:-top-1 peer-focus:text-sm peer-focus:text-blue-600 bg-transparent peer-focus:bg-white peer-focus:px-1 rounded-md"
+                      >
+                        Subject *
+                      </label>
                     </div>
 
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
-                        Message *
-                      </label>
+                    <div className="relative pt-2">
                       <textarea
                         id="message"
                         name="message"
@@ -294,13 +280,19 @@ const Contact = () => {
                         onChange={handleInputChange}
                         required
                         rows={5}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none bg-gray-50 focus:bg-white"
-                        placeholder="Tell me about your project, timeline, and any specific requirements..."
+                        className="peer w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none bg-gray-50 focus:bg-white placeholder-transparent focus:shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+                        placeholder="Message *"
                       ></textarea>
+                      <label
+                        htmlFor="message"
+                        className="absolute left-4 -top-1 text-gray-500 text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-5 peer-focus:-top-1 peer-focus:text-sm peer-focus:text-blue-600 bg-transparent peer-focus:bg-white peer-focus:px-1 rounded-md"
+                      >
+                        Message *
+                      </label>
                     </div>
 
                     <motion.button
-                      whileHover={{ scale: 1.02, boxShadow: "0 10px 30px rgba(59, 130, 246, 0.4)" }}
+                      whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       type="submit"
                       disabled={isSubmitting}
@@ -328,7 +320,13 @@ const Contact = () => {
             </motion.div>
 
             {/* Right side - Quick Contact & Social */}
-            <motion.div variants={itemVariants} className="space-y-8">
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="space-y-8"
+            >
               {/* Quick Actions */}
               <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl p-8 text-white relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
@@ -342,8 +340,7 @@ const Contact = () => {
                   </p>
                   
                   <div className="space-y-4">
-                    <motion.a
-                      whileHover={{ scale: 1.02, x: 5 }}
+                    <a
                       href="mailto:abdelrhmanahmedd2018@gmail.com"
                       className="flex items-center p-4 bg-white/10 backdrop-blur-sm rounded-xl hover:bg-white/20 transition-all duration-300"
                     >
@@ -352,10 +349,9 @@ const Contact = () => {
                         <div className="font-semibold">Email Me</div>
                         <div className="text-sm opacity-80">Quick response guaranteed</div>
                       </div>
-                    </motion.a>
+                    </a>
                     
-                    <motion.a
-                      whileHover={{ scale: 1.02, x: 5 }}
+                    <a
                       href="https://wa.me/201270755944"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -366,7 +362,7 @@ const Contact = () => {
                         <div className="font-semibold">WhatsApp</div>
                         <div className="text-sm opacity-80">Chat instantly</div>
                       </div>
-                    </motion.a>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -380,7 +376,7 @@ const Contact = () => {
                 
                 <div className="flex space-x-4">
                   <motion.a
-                    whileHover={{ scale: 1.1, rotate: 5, boxShadow: "0 10px 25px rgba(59, 130, 246, 0.4)" }}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
                     href="https://www.linkedin.com/in/abdelrhman-ahmed01/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -391,7 +387,7 @@ const Contact = () => {
                   </motion.a>
                   
                   <motion.a
-                    whileHover={{ scale: 1.1, rotate: -5, boxShadow: "0 10px 25px rgba(75, 85, 99, 0.4)" }}
+                    whileHover={{ scale: 1.1, rotate: -5 }}
                     href="https://github.com/abdelrhmanahmed255"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -404,7 +400,7 @@ const Contact = () => {
               </div>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

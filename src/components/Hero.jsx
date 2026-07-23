@@ -1,10 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { HiDownload, HiMail, HiLocationMarker, HiSparkles } from 'react-icons/hi';
-import { FaLinkedin, FaGithub, FaCode } from 'react-icons/fa';
+import { FaLinkedin, FaGithub, FaCode, FaReact, FaJs, FaGitAlt, FaNodeJs } from 'react-icons/fa';
+import { SiMongodb } from 'react-icons/si';
 
 const Hero = () => {
   const [showCVDropdown, setShowCVDropdown] = useState(false);
+  const [typedText, setTypedText] = useState('');
+  
+  const fullText = "Full Stack Node.js Developer";
+
+  // Typing effect
+  useEffect(() => {
+    let i = 0;
+    const timer = setInterval(() => {
+      setTypedText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) {
+        clearInterval(timer);
+      }
+    }, 60);
+    return () => clearInterval(timer);
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -25,8 +42,8 @@ const Hero = () => {
     visible: {
       opacity: 1,
       transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2
+        delayChildren: 0.1,
+        staggerChildren: 0.1
       }
     }
   };
@@ -37,7 +54,7 @@ const Hero = () => {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.6,
+        duration: 0.4,
         ease: "easeOut"
       }
     }
@@ -49,53 +66,76 @@ const Hero = () => {
       scale: 1,
       opacity: 1,
       transition: {
-        duration: 0.8,
+        duration: 0.5,
         ease: "easeOut"
       }
     }
   };
 
-  const floatingVariants = {
-    animate: {
-      y: [-10, 10, -10],
-      rotate: [0, 5, 0, -5, 0],
-      transition: {
-        duration: 6,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
+  // Helper to render typed text with different colors
+  const renderTypedText = () => {
+    const firstPart = "Full Stack ";
+    if (typedText.length <= firstPart.length) {
+      return <span>{typedText}</span>;
     }
+    return (
+      <>
+        <span>{firstPart}</span>
+        <span className="text-blue-400">{typedText.substring(firstPart.length)}</span>
+      </>
+    );
   };
 
-  // Floating background elements
-  const FloatingElement = ({ delay = 0, size = "w-4 h-4", position = "top-20 left-20" }) => (
-    <motion.div
-      className={`absolute ${position} ${size} bg-white/10 rounded-full blur-sm`}
-      animate={{
-        y: [-20, 20, -20],
-        x: [-10, 10, -10],
-        opacity: [0.3, 0.8, 0.3]
-      }}
-      transition={{
-        duration: 4 + delay,
-        repeat: Infinity,
-        ease: "easeInOut",
-        delay: delay
-      }}
-    />
-  );
-
   return (
-    <section id="hero" className="min-h-screen relative bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Animated background elements */}
-      <div className="absolute inset-0">
-        <FloatingElement delay={0} size="w-2 h-2" position="top-20 left-[10%]" />
-        <FloatingElement delay={1} size="w-3 h-3" position="top-40 right-[15%]" />
-        <FloatingElement delay={2} size="w-4 h-4" position="top-60 left-[20%]" />
-        <FloatingElement delay={1.5} size="w-2 h-2" position="bottom-40 right-[10%]" />
-        <FloatingElement delay={0.5} size="w-3 h-3" position="bottom-60 left-[15%]" />
-        <FloatingElement delay={2.5} size="w-5 h-5" position="top-[30%] right-[5%]" />
-      </div>
+    <section 
+      id="hero" 
+      className="min-h-screen relative bg-slate-900 overflow-hidden"
+    >
+      {/* 1. Aurora gradient mesh background */}
+      <motion.div className="absolute inset-0 z-0">
+        <motion.div 
+          className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-600/30 rounded-full blur-[120px]"
+          animate={{ x: [0, 25, 0], y: [0, 15, 0], scale: [1, 1.1, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-purple-600/20 rounded-full blur-[120px]"
+          animate={{ x: [0, -25, 0], y: [0, 25, 0], scale: [1, 1.2, 1] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="hidden md:block absolute bottom-[-10%] left-[20%] w-[50%] h-[50%] bg-blue-600/20 rounded-full blur-[120px]"
+          animate={{ x: [0, 15, 0], y: [0, -25, 0], scale: [1, 1.3, 1] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="hidden md:block absolute bottom-[10%] right-[10%] w-[40%] h-[40%] bg-pink-600/20 rounded-full blur-[120px]"
+          animate={{ x: [0, -15, 0], y: [0, 15, 0], scale: [1, 1.1, 1] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+        />
+        
+        {/* 4. Floating tech icons in background */}
+        <motion.div className="hidden md:block absolute top-[20%] left-[15%] text-6xl text-white opacity-5"
+          animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }} transition={{ duration: 5, repeat: Infinity }}>
+          <FaReact />
+        </motion.div>
+        <motion.div className="hidden md:block absolute top-[60%] left-[8%] text-5xl text-white opacity-5"
+          animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }} transition={{ duration: 6, repeat: Infinity }}>
+          <FaJs />
+        </motion.div>
+        <motion.div className="hidden md:block absolute top-[15%] right-[25%] text-6xl text-white opacity-5"
+          animate={{ y: [0, -15, 0], rotate: [0, 15, 0] }} transition={{ duration: 5.5, repeat: Infinity }}>
+          <FaNodeJs />
+        </motion.div>
+        <motion.div className="hidden md:block absolute bottom-[25%] right-[15%] text-7xl text-white opacity-5"
+          animate={{ y: [0, 25, 0], rotate: [0, -15, 0] }} transition={{ duration: 7, repeat: Infinity }}>
+          <SiMongodb />
+        </motion.div>
+        <motion.div className="hidden md:block absolute bottom-[15%] left-[25%] text-5xl text-white opacity-5"
+          animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }} transition={{ duration: 4.5, repeat: Infinity }}>
+          <FaGitAlt />
+        </motion.div>
+      </motion.div>
 
       {/* Main content */}
       <div className="relative z-10 min-h-screen flex items-center pt-20 pb-10">
@@ -131,15 +171,29 @@ const Hero = () => {
               </motion.div>
 
               <motion.div variants={itemVariants}>
-                <h2 className="text-2xl md:text-4xl font-light mb-6 text-gray-200">
-                  Frontend Developer & 
-                  <span className="text-blue-400"> UI/UX Enthusiast</span>
+                <h2 className="text-2xl md:text-4xl font-light mb-6 text-gray-200 min-h-[40px] md:min-h-[48px]">
+                  {renderTypedText()}
+                  <motion.span 
+                    animate={{ opacity: [1, 0] }} 
+                    transition={{ duration: 0.8, repeat: Infinity }}
+                    className="inline-block w-[2px] h-[1em] bg-blue-400 ml-1 align-middle"
+                  />
                 </h2>
                 <p className="text-lg md:text-xl text-gray-300 max-w-2xl leading-relaxed">
-                  Passionate Frontend Developer with expertise in React.js ecosystem. 
-                  I craft beautiful, responsive user interfaces with clean code and optimal performance.
-                  Let's build something amazing together! 🚀
+                  Passionate Full Stack Developer with expertise in React.js and Node.js ecosystems. I build end-to-end web applications with beautiful frontends and robust backends. Let's build something amazing together! 🚀
                 </p>
+
+                {/* 6. Inline stats badges */}
+                <div className="flex flex-wrap gap-4 mt-6">
+                  <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 px-4 py-2 rounded-xl backdrop-blur-md flex items-center shadow-lg shadow-blue-500/5 hover:bg-blue-500/20 transition-all duration-300">
+                    <span className="text-blue-400 font-bold text-xl mr-2">10+</span> 
+                    <span className="text-gray-300 text-sm font-medium">Projects</span>
+                  </div>
+                  <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 px-4 py-2 rounded-xl backdrop-blur-md flex items-center shadow-lg shadow-purple-500/5 hover:bg-purple-500/20 transition-all duration-300">
+                    <span className="text-purple-400 font-bold text-xl mr-2">1+</span> 
+                    <span className="text-gray-300 text-sm font-medium">Years Exp.</span>
+                  </div>
+                </div>
               </motion.div>
 
               <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
@@ -188,7 +242,6 @@ const Hero = () => {
                       zIndex: 9999
                     }}
                   >
-                    {/* Direct Download Option */}
                     <motion.a
                       href="/cv/Abdelrhman-Ahmed-CV.pdf"
                       download="Abdelrhman_Ahmed_CV.pdf"
@@ -205,9 +258,8 @@ const Hero = () => {
                       </div>
                     </motion.a>
                     
-                    {/* Google Drive Option */}
                     <motion.a
-                      href="https://drive.google.com/file/d/1Nfws5GOBLGy6syCr-aX9y0sXuWq0kuc9/view?usp=sharing"
+                      href="https://drive.google.com/file/d/1uO7P1lAuWyDv3xr0VMYJHzioeqZuAGKF/view?usp=sharing"
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => setShowCVDropdown(false)}
@@ -258,29 +310,25 @@ const Hero = () => {
             >
               <div className="relative">
                 {/* Glowing background circle */}
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-purple-500/30 rounded-full blur-2xl"
-                  animate={{
-                    scale: [1, 1.1, 1],
-                    opacity: [0.5, 0.8, 0.5]
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-purple-500/30 rounded-full blur-2xl" />
                 
                 {/* Photo container */}
-                <motion.div 
-                  variants={floatingVariants}
-                  animate="animate"
-                  className="relative w-80 h-80 md:w-96 md:h-96"
-                >
+                <div className="relative w-80 h-80 md:w-96 md:h-96 hover:-translate-y-2 transition-transform duration-500">
+                  {/* 3. Double-ring animation */}
+                  <motion.div
+                    className="hidden md:block absolute inset-[-15px] rounded-full border-[2px] border-dashed border-blue-400/60"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  />
+                  <motion.div
+                    className="hidden md:block absolute inset-[-30px] rounded-full border-[2px] border-dotted border-purple-400/60"
+                    animate={{ rotate: -360 }}
+                    transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                  />
+                  
                   {/* Photo frame with gradient border */}
-                  <div className="w-full h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full p-1">
+                  <div className="relative w-full h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full p-1 z-10">
                     <div className="w-full h-full bg-slate-900 rounded-full p-2">
-                      {/* Photo placeholder - replace with your actual photo */}
                       <div className="w-full h-full bg-white rounded-full flex items-center justify-center text-gray-700 text-6xl overflow-hidden relative group cursor-pointer">
                         <img 
                           src="/me.png" 
@@ -292,7 +340,6 @@ const Hero = () => {
                             e.target.nextSibling.style.display = 'flex';
                           }}
                         />
-                        {/* Fallback icon shown if image fails to load */}
                         <div
                           style={{ display: 'none' }}
                           className="w-full h-full bg-white rounded-full flex items-center justify-center text-gray-700 text-4xl font-bold"
@@ -300,41 +347,46 @@ const Hero = () => {
                           <FaCode />
                         </div>
                         
-                        {/* Half circle at bottom with </> icon - only shows on hover */}
                         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full h-1/4 bg-gray-800/90 backdrop-blur-sm rounded-b-full flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 ease-out">
                           <div className="text-white text-3xl font-bold transform scale-90 group-hover:scale-100 transition-transform duration-200">
                             &lt;/&gt;
                           </div>
                         </div>
                         
-                        {/* Hover overlay for professional effect */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* Scroll indicator */}
+          {/* 5. Better scroll indicator (sleeker mouse icon) */}
           <motion.div
             variants={itemVariants}
             className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
           >
             <motion.div
-              animate={{ y: [0, 10, 0] }}
+              animate={{ y: [0, 5, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="text-gray-300 text-center"
+              className="flex flex-col items-center justify-center opacity-70 hover:opacity-100 transition-opacity"
             >
-              <div className="w-6 h-10 border-2 border-gray-400 rounded-full mx-auto flex justify-center">
+              <div className="w-[26px] h-[42px] rounded-full border-2 border-white/50 flex justify-center p-[2px]">
                 <motion.div 
-                  className="w-1 h-3 bg-gradient-to-b from-blue-400 to-purple-400 rounded-full mt-2"
-                  animate={{ opacity: [1, 0.3, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-[4px] h-[8px] bg-white rounded-full"
+                  animate={{ 
+                    y: [0, 16, 0], 
+                    opacity: [1, 0, 1] 
+                  }}
+                  transition={{ 
+                    duration: 1.5, 
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
                 />
               </div>
-              <p className="mt-2 text-sm font-medium">Explore More</p>
+              <p className="mt-3 text-xs font-medium tracking-widest text-white/70 uppercase">Scroll</p>
             </motion.div>
           </motion.div>
         </div>
@@ -343,4 +395,4 @@ const Hero = () => {
   );
 };
 
-export default Hero; 
+export default Hero;
