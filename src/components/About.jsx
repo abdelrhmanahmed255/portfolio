@@ -174,7 +174,7 @@ const About = () => {
                 </div>
                 <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 md:p-6 rounded-xl hover:shadow-md transition-shadow">
                   <h4 className="font-bold text-gray-800 mb-1 md:mb-2 text-sm md:text-base">Experience</h4>
-                  <p className="text-gray-700 font-medium text-sm md:text-base">1 Year</p>
+                  <p className="text-gray-700 font-medium text-sm md:text-base">2+ Years</p>
                   <p className="text-gray-500 text-xs md:text-sm">Full Stack Development</p>
                 </div>
               </motion.div>

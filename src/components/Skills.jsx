@@ -39,10 +39,9 @@ const Skills = () => {
         { name: "Next.js", icon: SiNextdotjs, level: 85 },
         { name: "Redux", icon: SiRedux, level: 80 },
         { name: "Tailwind CSS", icon: SiTailwindcss, level: 90 },
-        { name: "Bootstrap", icon: FaBootstrap, level: 85 },
-        { name: "Material UI", icon: MdDesignServices, level: 80 },
-        { name: "Node.js", icon: FaNodeJs, level: 85 },
-        { name: "Express.js", icon: SiExpress, level: 80 }
+        { name: "shadcn/ui", icon: MdDesignServices, level: 85 },
+        { name: "Framer Motion", icon: MdDesignServices, level: 80 },
+        { name: "Material UI", icon: MdDesignServices, level: 80 }
       ]
     },
     {
@@ -53,8 +52,22 @@ const Skills = () => {
         { name: "Git", icon: FaGitAlt, level: 85 },
         { name: "Formik", icon: SiFormik, level: 80 },
         { name: "React Query", icon: SiReactquery, level: 75 },
-        { name: "Axios", icon: SiAxios, level: 85 },
-        { name: "MongoDB", icon: SiMongodb, level: 80 }
+        { name: "MongoDB", icon: SiMongodb, level: 80 },
+        { name: "Stripe", icon: HiCode, level: 70 },
+        { name: "Mendix", icon: HiCode, level: 80 }
+      ]
+    },
+    {
+      title: "Backend & Database",
+      icon: HiServer,
+      color: "teal",
+      skills: [
+        { name: "Node.js", icon: FaNodeJs, level: 85 },
+        { name: "Express.js", icon: SiExpress, level: 80 },
+        { name: "NestJS", icon: SiExpress, level: 75 },
+        { name: "GraphQL", icon: HiCode, level: 80 },
+        { name: "WebSockets", icon: HiCode, level: 80 },
+        { name: "JWT / Zod", icon: HiCode, level: 85 }
       ]
     },
     {
@@ -66,17 +79,6 @@ const Skills = () => {
         { name: "Data Analysis", level: 75 },
         { name: "Workflow Automation", level: 80 },
         { name: "Google Analytics", level: 70 }
-      ]
-    },
-    {
-      title: "Backend & Database",
-      icon: HiServer,
-      color: "teal",
-      skills: [
-        { name: "Node.js", icon: FaNodeJs, level: 85 },
-        { name: "Express.js", icon: SiExpress, level: 80 },
-        { name: "MongoDB", icon: SiMongodb, level: 80 },
-        { name: "REST APIs", icon: HiCode, level: 85 }
       ]
     }
   ];

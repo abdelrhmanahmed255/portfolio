@@ -333,6 +333,67 @@ const Projects = () => {
       icon: SiNextdotjs,
       color: "indigo",
       gradient: "from-indigo-500 to-purple-600"
+    },
+    {
+      title: "Frontend Quality CLI",
+      description: "An open-source skill and CLI for AI coding agents to automatically audit, review, and fix frontend projects. Covers clean code, responsive UI, accessibility, dead dependencies, and asset optimization.",
+      type: "NPM Package / Open Source",
+      link: "https://github.com/abdelrhmanahmed255/Frontend-Quality",
+      technologies: ["Node.js", "CLI", "AI Tooling"],
+      features: [
+        "Automated frontend audits",
+        "Accessibility & responsive UI checks",
+        "Dead dependency removal",
+        "Asset optimization"
+      ],
+      icon: HiCode,
+      color: "purple",
+      gradient: "from-purple-500 to-indigo-600"
+    },
+    {
+      title: "Social Media App Backend",
+      description: "Built a robust TypeScript backend for authentication, posts, comments, and friend requests using both REST and GraphQL APIs. Implemented JWT authentication, role-based access, Zod validation, centralized error handling, and AWS S3 media uploads.",
+      type: "Backend API",
+      technologies: ["Node.js", "Express.js", "TypeScript", "GraphQL", "MongoDB", "JWT", "AWS S3", "Zod"],
+      features: [
+        "REST and GraphQL APIs",
+        "JWT Authentication & RBAC",
+        "Zod validation & Error handling",
+        "AWS S3 media uploads"
+      ],
+      icon: FaRobot,
+      color: "green",
+      gradient: "from-green-500 to-teal-500"
+    },
+    {
+      title: "Sara7a REST API",
+      description: "Built a RESTful backend for an anonymous feedback/Q&A platform with user authentication, post management, and role-based access control. Implemented centralized error handling and request validation middleware across all routes.",
+      type: "Backend API",
+      technologies: ["Node.js", "Express.js", "MongoDB", "Mongoose", "JWT"],
+      features: [
+        "User Authentication",
+        "Anonymous feedback system",
+        "Role-based access control",
+        "Centralized error handling"
+      ],
+      icon: FaRobot,
+      color: "blue",
+      gradient: "from-blue-500 to-indigo-500"
+    },
+    {
+      title: "Booking System API",
+      description: "Designed a Node.js/Express booking API with JWT authentication covering registration, login, token refresh, and route protection. Created Mongoose schemas with validators and middleware that strip unexpected request fields, preventing mass-assignment vulnerabilities.",
+      type: "Backend API",
+      technologies: ["Node.js", "Express.js", "MongoDB", "Mongoose", "JWT"],
+      features: [
+        "JWT Authentication with token refresh",
+        "MVC separation of concerns",
+        "Environment-based configuration",
+        "Advanced schema validation"
+      ],
+      icon: FaRobot,
+      color: "red",
+      gradient: "from-red-500 to-orange-500"
     }
   ];
 
