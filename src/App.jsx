@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from './components/Header';
 import StageCurtainLoader from './components/StageCurtainLoader';
 
-const Hero = lazy(() => import('./components/Hero'));
-const About = lazy(() => import('./components/About'));
-const Education = lazy(() => import('./components/Education'));
-const Projects = lazy(() => import('./components/Projects'));
-const Skills = lazy(() => import('./components/Skills'));
-const Contact = lazy(() => import('./components/Contact'));
-const Footer = lazy(() => import('./components/Footer'));
+import Hero from './components/Hero';
+import About from './components/About';
+import Education from './components/Education';
+import Projects from './components/Projects';
+import Skills from './components/Skills';
+import Contact from './components/Contact';
+import Footer from './components/Footer';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -69,19 +69,15 @@ function App() {
           />
           
           <Header />
-          <main>
-            <Suspense fallback={null}>
-              <Hero />
-              <About />
-              <Education />
-              <Projects />
-              <Skills />
-              <Contact />
-            </Suspense>
+          <main className="min-h-screen">
+            <Hero />
+            <About />
+            <Education />
+            <Projects />
+            <Skills />
+            <Contact />
           </main>
-          <Suspense fallback={null}>
-            <Footer />
-          </Suspense>
+          <Footer />
         </motion.div>
       )}
     </div>
