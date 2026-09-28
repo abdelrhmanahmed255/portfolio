@@ -5,7 +5,8 @@ import {
 } from 'react-icons/fa';
 import { 
   SiTypescript, SiTailwindcss, SiNextdotjs, SiRedux,
-  SiFormik, SiReactquery, SiAxios, SiExpress, SiMongodb
+  SiFormik, SiReactquery, SiAxios, SiExpress, SiMongodb,
+  SiNestjs, SiRedis
 } from 'react-icons/si';
 import { HiCode, HiCog, HiGlobeAlt, HiLightBulb, HiSparkles, HiServer } from 'react-icons/hi';
 import { MdDesignServices } from 'react-icons/md';
@@ -64,7 +65,8 @@ const Skills = () => {
       skills: [
         { name: "Node.js", icon: FaNodeJs, level: 85 },
         { name: "Express.js", icon: SiExpress, level: 80 },
-        { name: "NestJS", icon: SiExpress, level: 75 },
+        { name: "NestJS", icon: SiNestjs, level: 75 },
+        { name: "Redis", icon: SiRedis, level: 75 },
         { name: "GraphQL", icon: HiCode, level: 80 },
         { name: "WebSockets", icon: HiCode, level: 80 },
         { name: "JWT / Zod", icon: HiCode, level: 85 }
@@ -85,7 +87,7 @@ const Skills = () => {
 
   const languages = [
     { name: "Arabic", level: 100, description: "Native" },
-    { name: "English", level: 75, description: "Intermediate" }
+    { name: "English", level: 75, description: "Conversational" }
   ];
 
   return (

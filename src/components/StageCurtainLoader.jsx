@@ -24,7 +24,7 @@ const StageCurtainLoader = ({ onComplete }) => {
       const timer = setTimeout(() => {
         setStage('complete');
         setTimeout(onComplete, 100);
-      }, 1000); // Give it a full second to open the doors
+      }, 1000); 
       return () => clearTimeout(timer);
     }
   }, [stage, onComplete]);
@@ -65,16 +65,16 @@ const StageCurtainLoader = ({ onComplete }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.5 } }}
-          className="fixed inset-0 z-[100] bg-[#0b1121] overflow-hidden flex items-center justify-center"
+          className="fixed inset-0 z-[100] bg-[#0d131f] overflow-hidden flex items-center justify-center"
         >
           {/* Top golden frame */}
-          <div className="absolute top-0 left-0 w-full h-4 bg-gradient-to-b from-[#e6c17a] via-[#c8aa6e] to-[#8a7040] z-40 shadow-lg border-b border-[#e6c17a]/50" />
+          <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-b from-[#e6c17a] via-[#c29b5a] to-[#8a7040] z-40 shadow-[0_2px_10px_rgba(0,0,0,0.5)]" />
           
-          {/* Top arch decoration (like the uploaded image) */}
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex items-start z-50">
-             <div className="w-16 h-8 bg-[#0f172a] rounded-b-full border-b border-x border-[#c8aa6e] shadow-[0_4px_15px_rgba(200,170,110,0.3)] mx-4" />
-             <div className="w-24 h-10 bg-[#0f172a] rounded-b-full border-b border-x border-[#c8aa6e] shadow-[0_4px_20px_rgba(200,170,110,0.4)] mx-4" />
-             <div className="w-16 h-8 bg-[#0f172a] rounded-b-full border-b border-x border-[#c8aa6e] shadow-[0_4px_15px_rgba(200,170,110,0.3)] mx-4" />
+          {/* Top decorative trim (matching the image's scallops) */}
+          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 flex items-start z-50">
+             <div className="w-12 h-4 bg-[#141d2b] rounded-b-full shadow-[0_4px_10px_rgba(194,155,90,0.2)] mx-2 border-b-2 border-x-2 border-[#c29b5a]" />
+             <div className="w-20 h-6 bg-[#141d2b] rounded-b-full shadow-[0_4px_15px_rgba(194,155,90,0.3)] mx-2 border-b-2 border-x-2 border-[#c29b5a]" />
+             <div className="w-12 h-4 bg-[#141d2b] rounded-b-full shadow-[0_4px_10px_rgba(194,155,90,0.2)] mx-2 border-b-2 border-x-2 border-[#c29b5a]" />
           </div>
 
           {/* LEFT DOOR */}
@@ -82,22 +82,26 @@ const StageCurtainLoader = ({ onComplete }) => {
             variants={leftDoorVariants}
             initial="closed"
             animate={stage === 'revealing' ? 'opening' : 'closed'}
-            className="absolute left-0 top-0 w-1/2 h-full z-30"
+            className="absolute left-0 top-0 w-1/2 h-full z-30 flex justify-end"
             style={{
-              background: 'linear-gradient(90deg, #0f172a 0%, #1e293b 100%)',
-              boxShadow: 'inset -2px 0 10px rgba(0,0,0,0.5)',
+              background: 'linear-gradient(90deg, #121926 0%, #1a2536 100%)',
+              boxShadow: 'inset -2px 0 10px rgba(0,0,0,0.6)',
             }}
           >
             {/* Vertical Panels */}
-            <div className="absolute inset-0 opacity-40 flex justify-between px-2" style={{ backgroundImage: 'linear-gradient(90deg, transparent 96%, rgba(200, 170, 110, 0.1) 96%, rgba(200, 170, 110, 0.2) 100%)', backgroundSize: '10% 100%' }} />
+            <div className="absolute inset-0 opacity-30 flex justify-between px-2 pointer-events-none" style={{ backgroundImage: 'linear-gradient(90deg, transparent 97%, rgba(0, 0, 0, 0.4) 97%, rgba(0, 0, 0, 0.6) 100%)', backgroundSize: '12.5% 100%' }} />
             
             {/* Golden edge */}
-            <div className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#8a7040] via-[#e6c17a] to-[#8a7040] shadow-[0_0_10px_rgba(200,170,110,0.5)]" />
+            <div className="absolute right-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-[#b68c4a] via-[#e2be76] to-[#b68c4a] shadow-[0_0_15px_rgba(226,190,118,0.4)] z-20" />
             
-            {/* Handle */}
-            <div className="absolute right-4 top-1/4 transform -translate-y-1/2 flex flex-col items-center">
-               <div className="w-2 h-12 bg-gradient-to-b from-[#e6c17a] via-[#f9df9f] to-[#a38045] rounded-full shadow-lg" />
-               <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#f9df9f] to-[#a38045] shadow-lg mt-[-8px] border-2 border-[#8a7040]" />
+            {/* Handle area */}
+            <div className="absolute right-6 top-[15%] flex flex-col items-center z-20">
+               {/* Top decorative dot */}
+               <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#f9df9f] to-[#a38045] shadow-[0_2px_8px_rgba(0,0,0,0.5)] border-2 border-[#8a7040] mb-[-4px] z-10" />
+               {/* Vertical bar */}
+               <div className="w-2.5 h-32 bg-gradient-to-b from-[#e2be76] via-[#c29b5a] to-[#8a7040] rounded-full shadow-[0_4px_10px_rgba(0,0,0,0.4)]" />
+               {/* Bottom decorative dot */}
+               <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#f9df9f] to-[#a38045] shadow-[0_2px_8px_rgba(0,0,0,0.5)] border-2 border-[#8a7040] mt-[-4px] z-10" />
             </div>
           </motion.div>
 
@@ -108,20 +112,24 @@ const StageCurtainLoader = ({ onComplete }) => {
             animate={stage === 'revealing' ? 'opening' : 'closed'}
             className="absolute right-0 top-0 w-1/2 h-full z-30"
             style={{
-              background: 'linear-gradient(270deg, #0f172a 0%, #1e293b 100%)',
-              boxShadow: 'inset 2px 0 10px rgba(0,0,0,0.5)',
+              background: 'linear-gradient(270deg, #121926 0%, #1a2536 100%)',
+              boxShadow: 'inset 2px 0 10px rgba(0,0,0,0.6)',
             }}
           >
             {/* Vertical Panels */}
-            <div className="absolute inset-0 opacity-40 flex justify-between px-2" style={{ backgroundImage: 'linear-gradient(270deg, transparent 96%, rgba(200, 170, 110, 0.1) 96%, rgba(200, 170, 110, 0.2) 100%)', backgroundSize: '10% 100%' }} />
+            <div className="absolute inset-0 opacity-30 flex justify-between px-2 pointer-events-none" style={{ backgroundImage: 'linear-gradient(270deg, transparent 97%, rgba(0, 0, 0, 0.4) 97%, rgba(0, 0, 0, 0.6) 100%)', backgroundSize: '12.5% 100%' }} />
             
             {/* Golden edge */}
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#8a7040] via-[#e6c17a] to-[#8a7040] shadow-[0_0_10px_rgba(200,170,110,0.5)]" />
+            <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-[#b68c4a] via-[#e2be76] to-[#b68c4a] shadow-[0_0_15px_rgba(226,190,118,0.4)] z-20" />
             
-            {/* Handle */}
-            <div className="absolute left-4 top-1/4 transform -translate-y-1/2 flex flex-col items-center">
-               <div className="w-2 h-12 bg-gradient-to-b from-[#e6c17a] via-[#f9df9f] to-[#a38045] rounded-full shadow-lg" />
-               <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#f9df9f] to-[#a38045] shadow-lg mt-[-8px] border-2 border-[#8a7040]" />
+            {/* Handle area */}
+            <div className="absolute left-6 top-[15%] flex flex-col items-center z-20">
+               {/* Top decorative dot */}
+               <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#f9df9f] to-[#a38045] shadow-[0_2px_8px_rgba(0,0,0,0.5)] border-2 border-[#8a7040] mb-[-4px] z-10" />
+               {/* Vertical bar */}
+               <div className="w-2.5 h-32 bg-gradient-to-b from-[#e2be76] via-[#c29b5a] to-[#8a7040] rounded-full shadow-[0_4px_10px_rgba(0,0,0,0.4)]" />
+               {/* Bottom decorative dot */}
+               <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#f9df9f] to-[#a38045] shadow-[0_2px_8px_rgba(0,0,0,0.5)] border-2 border-[#8a7040] mt-[-4px] z-10" />
             </div>
           </motion.div>
 
@@ -138,18 +146,18 @@ const StageCurtainLoader = ({ onComplete }) => {
                 <motion.div
                   className="absolute inset-0 rounded-full"
                   style={{
-                    background: 'radial-gradient(circle, rgba(200, 170, 110, 0.3) 0%, transparent 60%)',
-                    filter: 'blur(20px)',
-                    transform: 'scale(1.5)'
+                    background: 'radial-gradient(circle, rgba(194, 155, 90, 0.25) 0%, transparent 70%)',
+                    filter: 'blur(25px)',
+                    transform: 'scale(1.6)'
                   }}
-                  animate={{ opacity: [0.3, 0.6, 0.3], scale: [1.3, 1.6, 1.3] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  animate={{ opacity: [0.4, 0.7, 0.4], scale: [1.4, 1.7, 1.4] }}
+                  transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
                 />
                 
                 <motion.div
-                  className="relative w-32 h-32 rounded-full overflow-hidden bg-[#0f172a] z-10 flex items-center justify-center"
+                  className="relative w-36 h-36 rounded-full overflow-hidden bg-[#0d131f] z-10 flex items-center justify-center"
                   style={{
-                    boxShadow: '0 0 0 2px #c8aa6e, 0 0 20px rgba(200,170,110,0.5)'
+                    boxShadow: '0 0 0 2px #c29b5a, 0 0 25px rgba(194,155,90,0.6)'
                   }}
                 >
                   <img 
@@ -161,35 +169,35 @@ const StageCurtainLoader = ({ onComplete }) => {
               </div>
 
               {/* Title */}
-              <h2 className="text-3xl font-bold mb-2 tracking-wide text-[#e6c17a]" style={{ textShadow: '0 4px 10px rgba(0,0,0,0.5)' }}>
+              <h2 className="text-3xl font-bold mb-2 tracking-widest text-[#e2be76]" style={{ textShadow: '0 4px 15px rgba(0,0,0,0.8)' }}>
                 Abdelrhman Ahmed
               </h2>
-              <p className="text-sm mb-10 tracking-[0.3em] uppercase text-[#c8aa6e]/80">
+              <p className="text-sm mb-12 tracking-[0.4em] uppercase font-light text-[#c29b5a]/90">
                 Full Stack Developer
               </p>
 
               {/* Loader */}
-              <div className="w-64 mx-auto">
-                <div className="flex justify-between text-xs mb-2 font-medium text-[#c8aa6e]/70">
-                  <span className="tracking-wider">UNLOCKING</span>
-                  <span>{Math.round(Math.min(progress, 100))}%</span>
+              <div className="w-72 mx-auto">
+                <div className="flex justify-between text-xs mb-3 font-medium text-[#c29b5a]/80">
+                  <span className="tracking-widest">UNLOCKING</span>
+                  <span className="tracking-widest">{Math.round(Math.min(progress, 100))}%</span>
                 </div>
                 
-                <div className="h-1 rounded-full bg-[#0f172a] shadow-inner overflow-hidden border border-[#c8aa6e]/20">
+                <div className="h-1.5 rounded-full bg-[#0d131f] shadow-inner overflow-hidden border border-[#c29b5a]/30">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${Math.min(progress, 100)}%` }}
                     transition={{ duration: 0.2 }}
                     className="h-full relative"
                     style={{
-                      background: 'linear-gradient(90deg, #8a7040, #f9df9f, #c8aa6e)'
+                      background: 'linear-gradient(90deg, #8a7040, #f9df9f, #c29b5a)'
                     }}
                   >
                     <motion.div
                       className="absolute inset-0"
-                      style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)' }}
+                      style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent)' }}
                       animate={{ x: ['-100%', '200%'] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
+                      transition={{ duration: 1.8, repeat: Infinity, ease: 'linear' }}
                     />
                   </motion.div>
                 </div>

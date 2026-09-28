@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { HiMail, HiPhone, HiLocationMarker, HiCode, HiLightBulb, HiSparkles } from 'react-icons/hi';
-import { FaLinkedin, FaGithub, FaReact, FaJs, FaCss3Alt } from 'react-icons/fa';
+import { FaLinkedin, FaGithub, FaReact, FaJs, FaCss3Alt, FaNodeJs } from 'react-icons/fa';
 
 const AnimatedCounter = ({ end, suffix }) => {
   const [count, setCount] = useState(0);
@@ -149,6 +149,7 @@ const About = () => {
                 <h4 className="text-lg md:text-xl font-bold text-gray-800 mb-3 md:mb-4">Technologies I Love</h4>
                 <div className="flex flex-wrap gap-2 md:gap-3">
                   {[
+                    { name: "Node.js", icon: FaNodeJs, color: "text-green-500" },
                     { name: "React.js", icon: FaReact, color: "text-blue-500" },
                     { name: "JavaScript", icon: FaJs, color: "text-yellow-500" },
                     { name: "CSS3", icon: FaCss3Alt, color: "text-blue-600" }
