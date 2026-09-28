@@ -70,7 +70,7 @@ body {
   overflow-x: hidden;
   line-height: var(--leading-normal);
   color: #1f2937;
-  background: #ffffff;
+  background: #090b14;
   font-size: var(--text-base);
   -webkit-overflow-scrolling: touch;
 }
@@ -81,7 +81,8 @@ code {
 
 /* Mobile-specific fixes */
 @media (max-width: 768px) {
-  * {
+  /* Prevent universal transform which breaks position:fixed on iOS */
+  .hardware-accelerated {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
   }
@@ -108,11 +109,6 @@ code {
   /* Fix for mobile scrolling and animations */
   .mobile-fix {
     will-change: transform;
-  }
-
-  /* Ensure motion components are visible */
-  [data-projection-id] {
-    opacity: 1 !important;
   }
 
   /* About section specific fixes */

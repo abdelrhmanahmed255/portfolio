@@ -30,7 +30,7 @@ const StageCurtainLoader = ({ onComplete }) => {
     }
   }, [stage, onComplete]);
 
-  // Cinematic vault door opening transitions
+  // Cinematic vault door opening transitions (hardware-accelerated for iOS & PC)
   const leftDoorVariants = {
     closed: { x: 0 },
     revealing: {
@@ -62,11 +62,24 @@ const StageCurtainLoader = ({ onComplete }) => {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.3 } }}
-          className="fixed inset-0 z-[100] overflow-hidden bg-[#090b14] select-none"
+          className="fixed inset-0 w-full w-screen h-full h-screen min-h-[100dvh] z-[99999] overflow-hidden bg-[#090b14] select-none"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100vw',
+            height: '100dvh',
+            minHeight: '100vh',
+            zIndex: 99999,
+            backgroundColor: '#090b14',
+            touchAction: 'none'
+          }}
         >
-          {/* Ambient Background Aura behind doors */}
+          {/* Ambient Background Aura behind doors (capped blur for iOS GPU) */}
           <div className="absolute inset-0 pointer-events-none z-10 flex items-center justify-center">
-            <div className="w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-blue-600/20 via-purple-600/25 to-pink-600/20 blur-[120px] animate-pulse" />
+            <div className="w-[320px] h-[320px] md:w-[500px] md:h-[500px] rounded-full bg-gradient-to-tr from-blue-600/20 via-purple-600/25 to-pink-600/20 blur-[50px] md:blur-[120px] animate-pulse" />
           </div>
 
           {/* LEFT VAULT DOOR PANEL */}
@@ -74,11 +87,16 @@ const StageCurtainLoader = ({ onComplete }) => {
             variants={leftDoorVariants}
             initial="closed"
             animate={stage === 'revealing' ? 'revealing' : 'closed'}
-            className="absolute left-0 top-0 w-1/2 h-full z-20 overflow-hidden"
+            className="absolute left-0 top-0 w-1/2 h-full min-h-[100dvh] z-20 overflow-hidden"
             style={{
+              height: '100%',
+              minHeight: '100dvh',
               background: 'linear-gradient(135deg, #070913 0%, #0d1124 50%, #15112d 100%)',
               borderRight: '1px solid rgba(139, 92, 246, 0.35)',
-              boxShadow: 'inset -2px 0 25px rgba(59, 130, 246, 0.15)'
+              boxShadow: 'inset -2px 0 25px rgba(59, 130, 246, 0.15)',
+              WebkitBackfaceVisibility: 'hidden',
+              backfaceVisibility: 'hidden',
+              willChange: 'transform'
             }}
           >
             {/* Subtle Tech Grid lines */}
@@ -97,11 +115,16 @@ const StageCurtainLoader = ({ onComplete }) => {
             variants={rightDoorVariants}
             initial="closed"
             animate={stage === 'revealing' ? 'revealing' : 'closed'}
-            className="absolute right-0 top-0 w-1/2 h-full z-20 overflow-hidden"
+            className="absolute right-0 top-0 w-1/2 h-full min-h-[100dvh] z-20 overflow-hidden"
             style={{
+              height: '100%',
+              minHeight: '100dvh',
               background: 'linear-gradient(225deg, #070913 0%, #0d1124 50%, #15112d 100%)',
               borderLeft: '1px solid rgba(236, 72, 153, 0.35)',
-              boxShadow: 'inset 2px 0 25px rgba(236, 72, 153, 0.15)'
+              boxShadow: 'inset 2px 0 25px rgba(236, 72, 153, 0.15)',
+              WebkitBackfaceVisibility: 'hidden',
+              backfaceVisibility: 'hidden',
+              willChange: 'transform'
             }}
           >
             {/* Subtle Tech Grid lines */}
@@ -126,7 +149,7 @@ const StageCurtainLoader = ({ onComplete }) => {
               {/* CIRCULAR SEAL / BADGE */}
               <div className="relative w-48 h-48 md:w-52 md:h-52 mb-6 flex items-center justify-center">
                 {/* Multi-layered Glowing Rings */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 blur-xl opacity-35 animate-pulse" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 blur-lg md:blur-xl opacity-35 animate-pulse" />
 
                 {/* Counter-rotating tech rings */}
                 <motion.div
@@ -142,7 +165,7 @@ const StageCurtainLoader = ({ onComplete }) => {
 
                 {/* SVG Badge with Curved Typography & Monogram */}
                 <div className="relative w-full h-full rounded-full p-[2px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-[0_0_30px_rgba(139,92,246,0.35)]">
-                  <div className="w-full h-full rounded-full bg-[#0a0d1a]/90 backdrop-blur-md flex items-center justify-center overflow-hidden">
+                  <div className="w-full h-full rounded-full bg-[#0a0d1a] flex items-center justify-center overflow-hidden border border-purple-500/20">
                     <svg viewBox="0 0 200 200" className="w-full h-full p-1 select-none">
                       <defs>
                         <linearGradient id="badgeNeonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -154,23 +177,23 @@ const StageCurtainLoader = ({ onComplete }) => {
                         {/* Top arc path for "ABDELRHMAN AHMED" (clockwise over top) */}
                         <path id="curveTopPath" d="M 32,100 A 68,68 0 0,1 168,100" fill="none" />
 
-                        {/* Bottom arc path for "FRONTEND" (clockwise along bottom, right-side up) */}
+                        {/* Bottom arc path for "FULL STACK DEVELOPER" (clockwise along bottom, right-side up) */}
                         <path id="curveBottomPath" d="M 32,100 A 68,68 0 0,0 168,100" fill="none" />
                       </defs>
 
                       {/* Inner tech concentric circle */}
-                      <circle cx="100" cy="100" r="54" fill="rgba(15, 23, 42, 0.7)" stroke="rgba(139, 92, 246, 0.3)" strokeWidth="1" />
+                      <circle cx="100" cy="100" r="54" fill="rgba(15, 23, 42, 0.85)" stroke="rgba(139, 92, 246, 0.3)" strokeWidth="1" />
 
-                      {/* Curved Top Text */}
+                      {/* Curved Top Text (with both href and xlinkHref for iOS Safari) */}
                       <text fill="#cbd5e1" fontSize="8.5" fontWeight="700" letterSpacing="3.5px" className="font-sans">
-                        <textPath href="#curveTopPath" startOffset="50%" textAnchor="middle">
+                        <textPath href="#curveTopPath" xlinkHref="#curveTopPath" startOffset="50%" textAnchor="middle">
                           ABDELRHMAN AHMED
                         </textPath>
                       </text>
 
                       {/* Curved Bottom Text: FULL STACK DEVELOPER */}
                       <text fill="#a78bfa" fontSize="7.8" fontWeight="700" letterSpacing="3.2px" className="font-sans">
-                        <textPath href="#curveBottomPath" startOffset="50%" textAnchor="middle">
+                        <textPath href="#curveBottomPath" xlinkHref="#curveBottomPath" startOffset="50%" textAnchor="middle">
                           FULL STACK DEVELOPER
                         </textPath>
                       </text>
