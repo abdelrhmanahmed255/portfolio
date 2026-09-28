@@ -168,10 +168,10 @@ const StageCurtainLoader = ({ onComplete }) => {
                         </textPath>
                       </text>
 
-                      {/* Curved Bottom Text */}
-                      <text fill="#a78bfa" fontSize="8" fontWeight="600" letterSpacing="4px" className="font-sans">
+                      {/* Curved Bottom Text: FULL STACK DEVELOPER */}
+                      <text fill="#a78bfa" fontSize="7.8" fontWeight="700" letterSpacing="3.2px" className="font-sans">
                         <textPath href="#curveBottomPath" startOffset="50%" textAnchor="middle">
-                          FRONTEND DEVELOPER
+                          FULL STACK DEVELOPER
                         </textPath>
                       </text>
 
@@ -182,31 +182,35 @@ const StageCurtainLoader = ({ onComplete }) => {
                       {/* Central Initials "AA" */}
                       <text
                         x="100"
-                        y="97"
+                        y="94"
                         textAnchor="middle"
                         fontSize="32"
                         fontWeight="900"
                         fill="url(#badgeNeonGrad)"
                         letterSpacing="1px"
                         className="font-sans"
-                        style={{ filter: 'drop-shadow(0 2px 8px rgba(139, 92, 246, 0.5))' }}
+                        style={{ filter: 'drop-shadow(0 2px 10px rgba(139, 92, 246, 0.6))' }}
                       >
                         AA
                       </text>
 
-                      {/* Central Code Tag </ > */}
-                      <text
-                        x="100"
-                        y="118"
-                        textAnchor="middle"
-                        fontSize="13"
-                        fontWeight="700"
-                        fill="#38bdf8"
-                        letterSpacing="2px"
-                        fontFamily="ui-monospace, monospace"
-                      >
-                        &lt;/&gt;
-                      </text>
+                      {/* Central Full-Stack Symbol: Code bracket </> and Server Stack Nodes */}
+                      <g transform="translate(100, 116)">
+                        {/* Frontend Code Bracket </> */}
+                        <text x="-16" y="3" textAnchor="middle" fontSize="11" fontWeight="700" fill="#38bdf8" fontFamily="ui-monospace, monospace">
+                          &lt;/&gt;
+                        </text>
+
+                        {/* Connection node */}
+                        <circle cx="0" cy="0" r="1.8" fill="#a855f7" />
+
+                        {/* Backend Server / Database stack layers */}
+                        <g transform="translate(15, -4)">
+                          <path d="M -8,0 C -8,-2 8,-2 8,0 C 8,2 -8,2 -8,0 Z" fill="#ec4899" opacity="0.95" />
+                          <path d="M -8,0 L -8,3.5 C -8,5.5 8,5.5 8,3.5 L 8,0" fill="none" stroke="#ec4899" strokeWidth="1.3" />
+                          <path d="M -8,4.5 L -8,8 C -8,10 8,10 8,8 L 8,4.5" fill="none" stroke="#ec4899" strokeWidth="1.3" opacity="0.85" />
+                        </g>
+                      </g>
                     </svg>
                   </div>
                 </div>

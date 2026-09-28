@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <!-- Vibrant Cyber Neon Gradient -->
+    <linearGradient id="fsNeonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+
+    <!-- Deep Ambient Glow Background Filter -->
+    <radialGradient id="fsBgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.9" />
+      <stop offset="70%" stop-color="#0b0f19" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#070913" stop-opacity="1" />
+    </radialGradient>
+
+    <!-- Linear Gradient for Stack Layers -->
+    <linearGradient id="layerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+
+    <!-- Text Paths: Clockwise top and bottom -->
+    <path id="topTextArc" d="M 32,100 A 68,68 0 0,1 168,100" fill="none" />
+    <path id="bottomTextArc" d="M 32,100 A 68,68 0 0,0 168,100" fill="none" />
+  </defs>
+
+  <!-- Base Dark Glass Container -->
+  <circle cx="100" cy="100" r="96" fill="url(#fsBgGlow)" />
+
+  <!-- Outer Neon Gradient Ring -->
+  <circle cx="100" cy="100" r="92" fill="none" stroke="url(#fsNeonGrad)" stroke-width="2.5" />
+
+  <!-- Technical Dashed Orbit Ring -->
+  <circle cx="100" cy="100" r="85" fill="none" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="4 6" opacity="0.6" />
+
+  <!-- Technical Dotted Inner Orbit -->
+  <circle cx="100" cy="100" r="54" fill="#0c1020" stroke="rgba(168, 85, 247, 0.4)" stroke-width="1.2" />
+
+  <!-- Top Curved Text: Name -->
+  <text fill="#e2e8f0" font-size="8.5" font-weight="700" letter-spacing="3.5px" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif">
+    <textPath href="#topTextArc" startOffset="50%" text-anchor="middle">
+      ABDELRHMAN AHMED
+    </textPath>
+  </text>
+
+  <!-- Bottom Curved Text: FULL STACK DEVELOPER -->
+  <text fill="#a78bfa" font-size="7.8" font-weight="700" letter-spacing="3px" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif">
+    <textPath href="#bottomTextArc" startOffset="50%" text-anchor="middle">
+      FULL STACK DEVELOPER
+    </textPath>
+  </text>
+
+  <!-- Decorative Orbit Nodes -->
+  <circle cx="28" cy="100" r="2.5" fill="#38bdf8" />
+  <circle cx="172" cy="100" r="2.5" fill="#ec4899" />
+
+  <!-- Central "AA" Monogram -->
+  <text x="100" y="93" text-anchor="middle" font-size="30" font-weight="900" fill="url(#fsNeonGrad)" letter-spacing="1.5px" font-family="'Plus Jakarta Sans', system-ui, sans-serif">
+    AA
+  </text>
+
+  <!-- Full-Stack Symbol: Code bracket </> and Server Stack Nodes -->
+  <g transform="translate(100, 115)">
+    <!-- Frontend Code Bracket </> -->
+    <text x="-16" y="3" text-anchor="middle" font-size="10.5" font-weight="700" fill="#38bdf8" font-family="ui-monospace, monospace">
+      &lt;/&gt;
+    </text>
+
+    <!-- Connector dot -->
+    <circle cx="0" cy="0" r="1.5" fill="#a855f7" />
+
+    <!-- Backend Server/DB Layers Symbol -->
+    <g transform="translate(14, -4)">
+      <!-- Server Stack layers -->
+      <path d="M -8,0 C -8,-2 8,-2 8,0 C 8,2 -8,2 -8,0 Z" fill="#ec4899" opacity="0.9" />
+      <path d="M -8,0 L -8,3 C -8,5 8,5 8,3 L 8,0" fill="none" stroke="#ec4899" stroke-width="1.2" />
+      <path d="M -8,4 L -8,7 C -8,9 8,9 8,7 L 8,4" fill="none" stroke="#ec4899" stroke-width="1.2" opacity="0.8" />
+    </g>
+  </g>
+</svg>

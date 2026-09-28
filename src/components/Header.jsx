@@ -116,9 +116,9 @@ const Header = () => {
                 transition={{ duration: 0.3 }}
               >
                 <img 
-                  src="/logo frontend.png" 
-                  alt="AA Logo"
-                  className="w-full h-full object-cover"
+                  src="/logo-fullstack.svg" 
+                  alt="Full Stack Developer Logo" 
+                  className="w-full h-full object-contain"
                 />
               </motion.div>
               {/* Animated dot indicator */}
@@ -257,9 +257,9 @@ const Header = () => {
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg">
                     <img 
-                      src="/logo frontend.png" 
-                      alt="AA Logo"
-                      className="w-full h-full object-cover"
+                      src="/logo-fullstack.svg" 
+                      alt="Full Stack Developer Logo" 
+                      className="w-full h-full object-contain"
                     />
                   </div>
                   <div>
