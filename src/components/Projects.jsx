@@ -1,44 +1,27 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { HiExternalLink, HiCode, HiStar, HiSparkles } from 'react-icons/hi';
+import React from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { HiExternalLink, HiCode, HiStar } from 'react-icons/hi';
 import { FaReact, FaStripe, FaRobot, FaNodeJs, FaServer } from 'react-icons/fa';
 import { SiTailwindcss, SiNextdotjs, SiRedux, SiExpress, SiMongodb } from 'react-icons/si';
 
 const ProjectCard = ({ project, index }) => {
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
+  // Tilt driven by motion values — zero React re-renders on mousemove
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const springX = useSpring(rotateX, { stiffness: 300, damping: 20, mass: 0.5 });
+  const springY = useSpring(rotateY, { stiffness: 300, damping: 20, mass: 0.5 });
 
   const handleMouseMove = (e) => {
-    const card = e.currentTarget;
-    const box = card.getBoundingClientRect();
+    const box = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - box.left;
     const y = e.clientY - box.top;
-    
-    const centerX = box.width / 2;
-    const centerY = box.height / 2;
-    
-    // Max rotation of 3 degrees
-    const rotateXValue = ((y - centerY) / centerY) * -3;
-    const rotateYValue = ((x - centerX) / centerX) * 3;
-    
-    setRotateX(rotateXValue);
-    setRotateY(rotateYValue);
+    rotateX.set(((y - box.height / 2) / (box.height / 2)) * -3);
+    rotateY.set(((x - box.width / 2) / (box.width / 2)) * 3);
   };
 
   const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
-  };
-
-  const getTechBadgeColor = (tech) => {
-    if (tech.includes('React')) return 'bg-blue-50 text-blue-600 border-blue-100';
-    if (tech.includes('Tailwind')) return 'bg-cyan-50 text-cyan-600 border-cyan-100';
-    if (tech.includes('Next.js')) return 'bg-gray-100 text-gray-800 border-gray-200';
-    if (tech.includes('Redux')) return 'bg-purple-50 text-purple-600 border-purple-100';
-    if (tech.includes('AI')) return 'bg-emerald-50 text-emerald-600 border-emerald-100';
-    if (tech.includes('TypeScript')) return 'bg-blue-50 text-blue-700 border-blue-200';
-    if (tech.includes('Node.js') || tech.includes('Express') || tech.includes('MongoDB')) return 'bg-green-50 text-green-600 border-green-100';
-    return 'bg-gray-50 text-gray-600 border-gray-100';
+    rotateX.set(0);
+    rotateY.set(0);
   };
 
   const getTechIcon = (tech) => {
@@ -57,76 +40,78 @@ const ProjectCard = ({ project, index }) => {
     return <Icon className="mr-1.5" />;
   };
 
+  // Shutter unveil: each card wipes open from its own column side
+  const fromLeft = index % 2 === 0;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{
+        opacity: 0,
+        y: 40,
+        clipPath: fromLeft ? 'inset(-4% 100% -4% -4% round 16px)' : 'inset(-4% -4% -4% 100% round 16px)'
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        // negative insets (same % units throughout so framer can interpolate)
+        // keep the overflowing "Featured" badge un-clipped at rest
+        clipPath: 'inset(-4% -4% -4% -4% round 16px)'
+      }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      transition={{ duration: 0.8, delay: (index % 2) * 0.12, ease: [0.22, 1, 0.36, 1] }}
       className="relative group h-full"
       style={{ perspective: 1000 }}
     >
       {index === 0 && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5, type: "spring" }}
-          className="absolute -top-3 -right-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center shadow-[0_0_15px_rgba(245,158,11,0.5)] z-20 border border-amber-200"
+          className="absolute -top-3 -right-3 bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center shadow-lg z-20"
         >
-          <HiStar className="mr-1 text-sm animate-pulse" /> Featured
+          <HiStar className="mr-1 text-sm text-indigo-400" /> Featured
         </motion.div>
       )}
 
       <motion.div
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        animate={{ rotateX, rotateY }}
-        transition={{ type: "spring", stiffness: 300, damping: 20, mass: 0.5 }}
-        className="h-full relative rounded-2xl p-[2px] transform-gpu"
+        style={{ rotateX: springX, rotateY: springY }}
+        className="h-full relative rounded-2xl transform-gpu"
       >
-        {/* Animated Gradient Border on Hover */}
-        <motion.div
-          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500"
-          animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-          style={{ backgroundSize: "200% 200%" }}
-        />
-        
         {/* Card Content Container */}
-        <div className="relative h-full bg-white rounded-2xl overflow-hidden flex flex-col z-10">
-          <div className={`h-2 bg-gradient-to-r ${project.gradient}`}></div>
-          
+        <div className="relative h-full bg-white rounded-2xl overflow-hidden flex flex-col border border-slate-200 group-hover:border-indigo-300 shadow-sm group-hover:shadow-xl transition-[border-color,box-shadow] duration-300">
           <div className="p-6 md:p-8 flex flex-col flex-grow">
             <div className="flex items-start justify-between mb-6">
-              <div className={`w-12 h-12 bg-gradient-to-r ${project.gradient} rounded-xl flex items-center justify-center text-white shadow-lg`}>
+              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center text-white">
                 <project.icon className="text-xl" />
               </div>
-              <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full uppercase tracking-wider">
+              <span className="px-3 py-1 bg-slate-100 text-slate-500 text-xs font-medium rounded-full uppercase tracking-wider">
                 {project.type}
               </span>
             </div>
 
-            <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 group-hover:text-blue-600 transition-colors">
+            <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-4 group-hover:text-indigo-600 transition-colors">
               {project.title}
             </h3>
 
-            <p className="text-gray-600 mb-6 leading-relaxed line-clamp-4 group-hover:line-clamp-none transition-all duration-300">
+            <p className="text-slate-600 mb-6 leading-relaxed line-clamp-4 group-hover:line-clamp-none transition-all duration-300">
               {project.description}
             </p>
 
             {project.company && (
               <div className="mb-4">
-                <span className="text-sm font-medium text-gray-500">Client: </span>
-                <span className="text-blue-600 font-medium">{project.company}</span>
+                <span className="text-sm font-medium text-slate-500">Client: </span>
+                <span className="text-indigo-600 font-medium">{project.company}</span>
               </div>
             )}
 
             <div className="mb-6">
-              <h4 className="font-semibold text-gray-800 mb-3 text-sm uppercase tracking-wide">Key Features:</h4>
+              <h4 className="font-semibold text-slate-800 mb-3 text-sm uppercase tracking-wide">Key Features:</h4>
               <ul className="space-y-2">
                 {project.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start text-gray-600 text-sm">
-                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 mt-1.5 flex-shrink-0"></div>
+                  <li key={idx} className="flex items-start text-slate-600 text-sm">
+                    <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-3 mt-1.5 flex-shrink-0"></div>
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -134,12 +119,12 @@ const ProjectCard = ({ project, index }) => {
             </div>
 
             <div className="mb-6 mt-auto">
-              <h4 className="font-semibold text-gray-800 mb-3 text-sm uppercase tracking-wide">Technologies:</h4>
+              <h4 className="font-semibold text-slate-800 mb-3 text-sm uppercase tracking-wide">Technologies:</h4>
               <div className="flex flex-wrap gap-2">
                 {project.technologies.map((tech, idx) => (
                   <span
                     key={idx}
-                    className={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-full border transition-all duration-300 hover:scale-105 ${getTechBadgeColor(tech)}`}
+                    className="inline-flex items-center px-3 py-1 text-xs font-medium rounded-full border bg-slate-50 text-slate-600 border-slate-200 transition-colors duration-200 hover:border-indigo-300 hover:text-indigo-700"
                   >
                     {getTechIcon(tech)}
                     {tech}
@@ -148,16 +133,15 @@ const ProjectCard = ({ project, index }) => {
               </div>
             </div>
 
-            <div className="flex gap-3 pt-4 border-t border-gray-50">
+            <div className="flex gap-3 pt-4 border-t border-slate-100">
               <a
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group/btn flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 overflow-hidden relative"
+                className="flex items-center px-4 py-2 bg-slate-900 text-white rounded-lg font-medium hover:bg-indigo-600 transition-colors duration-300"
               >
-                <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover/btn:w-56 group-hover/btn:h-56 opacity-10"></span>
-                <HiExternalLink className="mr-2 relative z-10" />
-                <span className="relative z-10">View Project</span>
+                <HiExternalLink className="mr-2" />
+                <span>View Project</span>
               </a>
             </div>
           </div>
@@ -399,12 +383,6 @@ const Projects = () => {
 
   return (
     <section id="projects" className="py-24 bg-slate-50 relative overflow-hidden">
-      {/* Decorative background elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/5 blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-400/5 blur-[120px]" />
-      </div>
-
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -414,32 +392,30 @@ const Projects = () => {
           className="max-w-7xl mx-auto"
         >
           <div className="text-center mb-16">
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-600 font-semibold text-sm mb-6 shadow-sm"
+            <span className="inline-block text-indigo-600 text-xs font-semibold uppercase tracking-[0.25em] mb-4">
+              Portfolio Works
+            </span>
+
+            <motion.h2
+              initial={{ clipPath: 'inset(0 100% 0 0)' }}
+              whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, ease: [0.77, 0, 0.175, 1], delay: 0.1 }}
+              className="text-4xl md:text-5xl font-bold text-slate-900 mb-5 tracking-tight"
             >
-              <HiSparkles className="mr-2" /> Portfolio Works
-            </motion.div>
-            
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 tracking-tight">
-              Featured Projects
-            </h2>
-            
-            <div className="relative flex justify-center items-center mb-8">
-              <div className="w-32 h-1 bg-gray-200 rounded-full overflow-hidden">
-                <motion.div 
-                  initial={{ x: "-100%" }}
-                  whileInView={{ x: "100%" }}
-                  transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                  className="w-full h-full bg-gradient-to-r from-blue-400 via-blue-600 to-purple-600"
-                />
-              </div>
-            </div>
-            
-            <p className="text-gray-600 text-lg max-w-3xl mx-auto">
-              Showcase of <span className="font-semibold text-blue-600">{projects.length}</span> recent projects demonstrating expertise in modern web development and AI integration
+              Featured <span className="text-indigo-600">Projects</span>
+            </motion.h2>
+
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: "3rem" }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="h-[3px] bg-indigo-600 mx-auto rounded-full mb-6"
+            />
+
+            <p className="text-slate-500 text-lg max-w-3xl mx-auto">
+              Showcase of <span className="font-semibold text-indigo-600">{projects.length}</span> recent projects demonstrating expertise in modern web development and AI integration
             </p>
           </div>
 
