@@ -1,300 +1,223 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { 
-  FaReact, FaJsSquare, FaHtml5, FaCss3Alt, FaGitAlt, FaBootstrap, FaNodeJs
-} from 'react-icons/fa';
-import { 
-  SiTypescript, SiTailwindcss, SiNextdotjs, SiRedux,
-  SiFormik, SiReactquery, SiAxios, SiExpress, SiMongodb,
-  SiNestjs, SiRedis
-} from 'react-icons/si';
-import { HiCode, HiCog, HiGlobeAlt, HiLightBulb, HiSparkles, HiServer } from 'react-icons/hi';
-import { MdDesignServices } from 'react-icons/md';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const getSkillLabel = (level) => {
-  if (level >= 95) return "Expert";
-  if (level >= 85) return "Advanced";
-  if (level >= 75) return "Proficient";
-  return "Intermediate";
-};
+/*
+ * Skill level is shown as a 5-dot meter instead of the usual percentage bars.
+ * dots: 5 = Expert, 4 = Advanced, 3 = Proficient
+ */
+const CATEGORIES = [
+  {
+    id: 'frontend',
+    label: 'frontend',
+    skills: [
+      { name: 'react', dots: 5 },
+      { name: 'next.js', dots: 4 },
+      { name: 'javascript', dots: 5 },
+      { name: 'typescript', dots: 4 },
+      { name: 'html / css', dots: 5 },
+      { name: 'tailwind css', dots: 5 },
+      { name: 'redux toolkit', dots: 4 },
+      { name: 'shadcn/ui', dots: 4 },
+      { name: 'framer motion', dots: 4 }
+    ]
+  },
+  {
+    id: 'backend',
+    label: 'backend',
+    skills: [
+      { name: 'node.js', dots: 4 },
+      { name: 'express.js', dots: 4 },
+      { name: 'nestjs', dots: 3 },
+      { name: 'mongodb / mongoose', dots: 4 },
+      { name: 'redis', dots: 3 },
+      { name: 'graphql', dots: 4 },
+      { name: 'websockets', dots: 3 },
+      { name: 'jwt / zod', dots: 4 }
+    ]
+  },
+  {
+    id: 'tools',
+    label: 'tools',
+    skills: [
+      { name: 'git / github', dots: 4 },
+      { name: 'react query', dots: 3 },
+      { name: 'formik / yup', dots: 4 },
+      { name: 'stripe', dots: 3 },
+      { name: 'mendix', dots: 4 },
+      { name: 'vercel', dots: 4 }
+    ]
+  },
+  {
+    id: 'ai',
+    label: 'ai',
+    skills: [
+      { name: 'prompt engineering', dots: 4 },
+      { name: 'workflow automation', dots: 4 },
+      { name: 'data analysis', dots: 3 },
+      { name: 'google analytics', dots: 3 }
+    ]
+  },
+  {
+    id: 'languages',
+    label: 'languages',
+    skills: [
+      { name: 'arabic', dots: 5, note: 'native' },
+      { name: 'english', dots: 4, note: 'conversational' }
+    ]
+  }
+];
+
+const LEVEL_LABELS = { 5: 'expert', 4: 'advanced', 3: 'proficient' };
+
+const DotMeter = ({ dots }) => (
+  <span className="inline-flex items-center gap-1.5" aria-label={`${dots} out of 5`}>
+    {[1, 2, 3, 4, 5].map((i) => (
+      <span
+        key={i}
+        className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${i <= dots ? 'bg-indigo-400' : 'bg-slate-700'}`}
+      />
+    ))}
+  </span>
+);
 
 const Skills = () => {
-  const skillCategories = [
-    {
-      title: "Programming Languages",
-      icon: HiCode,
-      color: "blue",
-      skills: [
-        { name: "JavaScript", icon: FaJsSquare, level: 90 },
-        { name: "TypeScript", icon: SiTypescript, level: 80 },
-        { name: "HTML5", icon: FaHtml5, level: 95 },
-        { name: "CSS3", icon: FaCss3Alt, level: 90 }
-      ]
-    },
-    {
-      title: "Frameworks & Libraries",
-      icon: HiCog,
-      color: "green",
-      skills: [
-        { name: "React", icon: FaReact, level: 95 },
-        { name: "Next.js", icon: SiNextdotjs, level: 85 },
-        { name: "Redux", icon: SiRedux, level: 80 },
-        { name: "Tailwind CSS", icon: SiTailwindcss, level: 90 },
-        { name: "shadcn/ui", icon: MdDesignServices, level: 85 },
-        { name: "Framer Motion", icon: MdDesignServices, level: 80 },
-        { name: "Material UI", icon: MdDesignServices, level: 80 }
-      ]
-    },
-    {
-      title: "Tools & Platforms",
-      icon: HiGlobeAlt,
-      color: "purple",
-      skills: [
-        { name: "Git", icon: FaGitAlt, level: 85 },
-        { name: "Formik", icon: SiFormik, level: 80 },
-        { name: "React Query", icon: SiReactquery, level: 75 },
-        { name: "MongoDB", icon: SiMongodb, level: 80 },
-        { name: "Stripe", icon: HiCode, level: 70 },
-        { name: "Mendix", icon: HiCode, level: 80 }
-      ]
-    },
-    {
-      title: "Backend & Database",
-      icon: HiServer,
-      color: "teal",
-      skills: [
-        { name: "Node.js", icon: FaNodeJs, level: 85 },
-        { name: "Express.js", icon: SiExpress, level: 80 },
-        { name: "NestJS", icon: SiNestjs, level: 75 },
-        { name: "Redis", icon: SiRedis, level: 75 },
-        { name: "GraphQL", icon: HiCode, level: 80 },
-        { name: "WebSockets", icon: HiCode, level: 80 },
-        { name: "JWT / Zod", icon: HiCode, level: 85 }
-      ]
-    },
-    {
-      title: "AI Tools",
-      icon: HiLightBulb,
-      color: "orange",
-      skills: [
-        { name: "Prompt Engineering", level: 85 },
-        { name: "Data Analysis", level: 75 },
-        { name: "Workflow Automation", level: 80 },
-        { name: "Google Analytics", level: 70 }
-      ]
-    }
-  ];
-
-  const languages = [
-    { name: "Arabic", level: 100, description: "Native" },
-    { name: "English", level: 75, description: "Conversational" }
-  ];
+  const [active, setActive] = useState(CATEGORIES[0]);
 
   return (
-    <section id="skills" className="py-24 bg-gray-50 relative overflow-hidden">
-      {/* Decorative ambient background */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-[20%] right-[-5%] w-[30%] h-[30%] rounded-full bg-blue-300/10 blur-[100px]" />
-        <div className="absolute bottom-[10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-green-300/10 blur-[120px]" />
-      </div>
-
+    <section id="skills" className="py-24 bg-white relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-6xl mx-auto">
-          <motion.div 
+        <div className="max-w-3xl mx-auto">
+
+          {/* Section Header */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="text-center mb-14"
           >
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-600 font-semibold text-sm mb-6 shadow-sm"
+            <span className="inline-block text-indigo-600 text-xs font-semibold uppercase tracking-[0.25em] mb-4">
+              Technical Proficiency
+            </span>
+
+            <motion.h2
+              initial={{ clipPath: 'inset(0 100% 0 0)' }}
+              whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, ease: [0.77, 0, 0.175, 1], delay: 0.1 }}
+              className="text-4xl md:text-5xl font-bold text-slate-900 mb-5 tracking-tight"
             >
-              <HiSparkles className="mr-2" /> Technical Proficiency
-            </motion.div>
-            
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 tracking-tight">
-              Skills & Expertise
-            </h2>
-            
-            <div className="relative flex justify-center items-center mb-8">
-              <div className="w-32 h-1 bg-gray-200 rounded-full overflow-hidden">
-                <motion.div 
-                  initial={{ x: "-100%" }}
-                  whileInView={{ x: "100%" }}
-                  transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                  className="w-full h-full bg-gradient-to-r from-blue-400 via-blue-600 to-purple-600"
-                />
-              </div>
-            </div>
-            
-            <p className="text-gray-600 text-lg max-w-3xl mx-auto">
-              A comprehensive toolkit that drives innovative web solutions and robust applications
+              Skills & <span className="text-indigo-600">Expertise</span>
+            </motion.h2>
+
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: '3rem' }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="h-[3px] bg-indigo-600 mx-auto rounded-full mb-6"
+            />
+
+            <p className="text-slate-500 text-lg max-w-2xl mx-auto">
+              My stack, straight from the terminal — pick a command to explore
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-8 mb-16">
-            {skillCategories.map((category, index) => {
-              const bgGlowMap = {
-                blue: 'hover:bg-blue-50/50 hover:shadow-blue-500/10',
-                green: 'hover:bg-green-50/50 hover:shadow-green-500/10',
-                purple: 'hover:bg-purple-50/50 hover:shadow-purple-500/10',
-                orange: 'hover:bg-orange-50/50 hover:shadow-orange-500/10',
-                teal: 'hover:bg-teal-50/50 hover:shadow-teal-500/10',
-              };
-
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ y: -5 }}
-                  className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl p-8 border border-gray-100 transition-all duration-300 relative group overflow-hidden`}
-                >
-                  {/* Subtle top border accent */}
-                  <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${
-                    category.color === 'blue' ? 'from-blue-400 to-blue-600' :
-                    category.color === 'green' ? 'from-green-400 to-green-600' :
-                    category.color === 'purple' ? 'from-purple-400 to-purple-600' :
-                    category.color === 'teal' ? 'from-teal-400 to-teal-600' :
-                    'from-orange-400 to-orange-600'
-                  } transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out`} />
-                  
-                  <div className="flex items-center mb-8">
-                    <motion.div 
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      whileInView={{ scale: [0.8, 1.1, 1], opacity: 1 }}
-                      transition={{ duration: 0.6, delay: 0.2 + (index * 0.1) }}
-                      className={`w-14 h-14 ${
-                        category.color === 'blue' ? 'bg-blue-100 shadow-blue-200' :
-                        category.color === 'green' ? 'bg-green-100 shadow-green-200' :
-                        category.color === 'purple' ? 'bg-purple-100 shadow-purple-200' :
-                        category.color === 'teal' ? 'bg-teal-100 shadow-teal-200' :
-                        'bg-orange-100 shadow-orange-200'
-                      } rounded-2xl flex items-center justify-center mr-5 shadow-inner`}
-                    >
-                      <category.icon className={`text-2xl ${
-                        category.color === 'blue' ? 'text-blue-600' :
-                        category.color === 'green' ? 'text-green-600' :
-                        category.color === 'purple' ? 'text-purple-600' :
-                        category.color === 'teal' ? 'text-teal-600' :
-                        'text-orange-600'
-                      }`} />
-                    </motion.div>
-                    <h3 className="text-xl font-bold text-gray-800">
-                      {category.title}
-                    </h3>
-                  </div>
-
-                  <div className="space-y-5">
-                    {category.skills.map((skill, idx) => (
-                      <div key={idx} className={`space-y-2 p-2 -mx-2 rounded-xl transition-all duration-300 ${bgGlowMap[category.color]}`}>
-                        <div className="flex items-center justify-between px-2">
-                          <div className="flex items-center">
-                            {skill.icon && <skill.icon className="text-lg mr-2.5 text-gray-500 group-hover:text-gray-700 transition-colors" />}
-                            <span className="font-medium text-gray-700">{skill.name}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
-                              {getSkillLabel(skill.level)}
-                            </span>
-                            <span className="text-sm font-bold text-gray-400 w-10 text-right">{skill.level}%</span>
-                          </div>
-                        </div>
-                        <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden mx-2 relative">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${skill.level}%` }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1.2, delay: idx * 0.15, ease: "easeOut" }}
-                            className={`h-full rounded-full relative overflow-hidden ${
-                              category.color === 'blue' ? 'bg-gradient-to-r from-blue-400 to-blue-600' :
-                              category.color === 'green' ? 'bg-gradient-to-r from-green-400 to-green-600' :
-                              category.color === 'purple' ? 'bg-gradient-to-r from-purple-400 to-purple-600' :
-                              category.color === 'teal' ? 'bg-gradient-to-r from-teal-400 to-teal-600' :
-                              'bg-gradient-to-r from-orange-400 to-orange-600'
-                            }`}
-                          >
-                            {/* Shimmer sweep effect */}
-                            <motion.div
-                              className="absolute top-0 bottom-0 left-0 w-full bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12"
-                              initial={{ x: '-100%' }}
-                              whileInView={{ x: '200%' }}
-                              viewport={{ once: true }}
-                              transition={{ duration: 1.5, delay: 1 + (idx * 0.15), ease: "easeInOut" }}
-                            />
-                          </motion.div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Languages Section */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            whileHover={{ y: -5 }}
-            className="bg-white rounded-2xl shadow-lg hover:shadow-2xl p-8 border border-gray-100 transition-all duration-300 relative overflow-hidden group"
+          {/* Terminal window */}
+          <motion.div
+            initial={{ opacity: 0, y: 48, scale: 0.97 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl shadow-slate-900/20 overflow-hidden"
           >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-400 to-indigo-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" />
-            
-            <div className="flex items-center mb-8">
-              <motion.div 
-                initial={{ scale: 0.8, opacity: 0 }}
-                whileInView={{ scale: [0.8, 1.1, 1], opacity: 1 }}
-                transition={{ duration: 0.6 }}
-                className="w-14 h-14 bg-indigo-100 shadow-indigo-200 rounded-2xl flex items-center justify-center mr-5 shadow-inner"
-              >
-                <HiGlobeAlt className="text-2xl text-indigo-600" />
-              </motion.div>
-              <h3 className="text-xl font-bold text-gray-800">Languages</h3>
+            {/* Title bar */}
+            <div className="flex items-center justify-between px-5 py-3.5 bg-slate-800/60 border-b border-slate-800">
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-slate-600" />
+                <span className="w-3 h-3 rounded-full bg-slate-600" />
+                <span className="w-3 h-3 rounded-full bg-indigo-500" />
+              </div>
+              <p className="font-mono text-xs text-slate-400 select-none">
+                abdelrhman@portfolio — ~/skills
+              </p>
+              <span className="w-[52px]" aria-hidden="true" />
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              {languages.map((language, index) => (
-                <div key={index} className="space-y-3 p-3 -mx-3 rounded-xl hover:bg-indigo-50/50 hover:shadow-indigo-500/10 transition-all duration-300">
-                  <div className="flex items-center justify-between px-2">
-                    <span className="font-semibold text-gray-700 text-lg">{language.name}</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-700">
-                        {language.description}
-                      </span>
-                      <span className="text-sm font-bold text-gray-400">{language.level}%</span>
-                    </div>
-                  </div>
-                  <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden mx-2">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${language.level}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.2, delay: index * 0.2, ease: "easeOut" }}
-                      className="h-full bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full relative overflow-hidden"
-                    >
-                      {/* Shimmer sweep effect */}
-                      <motion.div
-                        className="absolute top-0 bottom-0 left-0 w-full bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12"
-                        initial={{ x: '-100%' }}
-                        whileInView={{ x: '200%' }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1.5, delay: 1 + (index * 0.2), ease: "easeInOut" }}
-                      />
-                    </motion.div>
-                  </div>
-                </div>
+            {/* Command tabs */}
+            <div className="flex flex-wrap gap-2 px-5 pt-5 pb-1">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActive(cat)}
+                  className={`font-mono text-xs md:text-sm px-3.5 py-1.5 rounded-lg border transition-colors duration-200 ${
+                    active.id === cat.id
+                      ? 'bg-indigo-600/15 border-indigo-500/60 text-indigo-300'
+                      : 'bg-transparent border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
+                  }`}
+                >
+                  {cat.label}
+                </button>
               ))}
             </div>
+
+            {/* Output */}
+            <div className="px-5 md:px-7 py-5 font-mono text-sm md:text-[15px] min-h-[340px] md:min-h-[360px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={active.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, transition: { duration: 0.12 } }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <p className="text-slate-500 mb-4">
+                    <span className="text-indigo-400">$</span>{' '}
+                    <span className="text-slate-300">skills</span> --list {active.label}
+                  </p>
+
+                  <div className="space-y-2.5">
+                    {active.skills.map((skill, i) => (
+                      <motion.div
+                        key={skill.name}
+                        initial={{ opacity: 0, x: -14 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: 0.08 + i * 0.05, ease: 'easeOut' }}
+                        className="flex items-center justify-between gap-3 px-3 py-2 -mx-3 rounded-lg hover:bg-slate-800/60 transition-colors duration-200"
+                      >
+                        <span className="text-slate-200 truncate">
+                          <span className="text-indigo-400 mr-2.5" aria-hidden="true">▸</span>
+                          {skill.name}
+                        </span>
+                        <span className="flex items-center gap-3 shrink-0">
+                          <DotMeter dots={skill.dots} />
+                          <span className="text-slate-500 text-xs w-24 text-right hidden sm:inline">
+                            {skill.note || LEVEL_LABELS[skill.dots]}
+                          </span>
+                        </span>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 + active.skills.length * 0.05 }}
+                    className="text-slate-500 mt-5"
+                  >
+                    {active.skills.length} packages listed <span className="text-slate-600">· no vulnerabilities found</span>
+                  </motion.p>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Prompt with blinking cursor */}
+              <p className="mt-5 text-slate-400">
+                <span className="text-indigo-400">$</span>{' '}
+                <span className="terminal-cursor inline-block w-[9px] h-[18px] bg-indigo-400 align-middle" />
+              </p>
+            </div>
           </motion.div>
+
         </div>
       </div>
     </section>
