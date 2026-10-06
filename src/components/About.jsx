@@ -285,50 +285,46 @@ const About = () => {
         </div>
       </div>
 
-      {/* Story ending — the numbers so far */}
-      <div className="container mx-auto px-6 pb-20 md:pb-28 pt-12 md:pt-16">
-        <div className="max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="bg-slate-900 rounded-3xl px-8 py-10 md:px-14 md:py-12 relative overflow-hidden">
-              <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-indigo-600/20 blur-3xl pointer-events-none" />
-
-              <div className="relative z-10">
-                <p className="text-indigo-400 text-xs font-semibold uppercase tracking-[0.25em] mb-6 text-center">
-                  The story so far
+      {/* Story ending — compact stat cards near the screen */}
+      <div className="container mx-auto px-6 pb-20 md:pb-24 pt-8 md:pt-10">
+        <div className="max-w-2xl mx-auto">
+          <div className="grid grid-cols-3 gap-3 md:gap-4">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 24, scale: 0.92 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ type: 'spring', stiffness: 180, damping: 18, delay: index * 0.1 }}
+                className="bg-white border border-slate-200 rounded-2xl px-3 py-4 md:px-5 md:py-5 text-center shadow-sm hover:shadow-md hover:border-indigo-200 transition-[box-shadow,border-color] duration-300"
+              >
+                <p className="text-2xl md:text-3xl font-extrabold text-indigo-600 mb-0.5">
+                  <AnimatedCounter end={stat.number} suffix={stat.suffix} />
                 </p>
+                <p className="text-slate-500 text-[11px] md:text-sm font-medium leading-tight">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
 
-                <div className="grid grid-cols-3 gap-4 md:gap-8 mb-10">
-                  {stats.map((stat) => (
-                    <div key={stat.label} className="text-center">
-                      <p className="text-3xl md:text-5xl font-extrabold text-white mb-1">
-                        <AnimatedCounter end={stat.number} suffix={stat.suffix} />
-                      </p>
-                      <p className="text-slate-400 text-xs md:text-sm font-medium">{stat.label}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="text-center">
-                  <p className="text-slate-300 text-lg md:text-xl font-medium mb-6">
-                    The next chapter? It could be <span className="text-indigo-400">your project</span>.
-                  </p>
-                  <motion.button
-                    whileHover={{ scale: 1.04 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-7 py-3.5 rounded-xl transition-colors duration-300"
-                  >
-                    Let's write it together
-                    <HiArrowRight />
-                  </motion.button>
-                </div>
-              </div>
-            </div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="text-center mt-8"
+          >
+            <p className="text-slate-600 mb-4">
+              The next chapter? It could be <span className="text-indigo-600 font-semibold">your project</span>.
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-3 rounded-xl transition-colors duration-300"
+            >
+              Let's write it together
+              <HiArrowRight />
+            </motion.button>
           </motion.div>
         </div>
       </div>
