@@ -1,185 +1,183 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaLinkedin, FaGithub, FaHeart } from 'react-icons/fa';
-import { HiArrowUp } from 'react-icons/hi';
+import { FaLinkedin, FaGithub, FaWhatsapp } from 'react-icons/fa';
+import { HiArrowUp, HiMail } from 'react-icons/hi';
+
+const quickLinks = ['About', 'Education', 'Projects', 'Skills', 'Contact'];
 
 const Footer = () => {
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <footer className="relative bg-gray-900 text-white py-12 pt-20">
-      {/* Wave SVG divider at the top */}
-      <div className="absolute top-0 left-0 w-full overflow-hidden leading-none -translate-y-[99%]">
-        <svg className="relative block w-full h-[60px] md:h-[100px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="fill-gray-900"></path>
-        </svg>
+    <footer className="relative bg-slate-950 text-white overflow-hidden">
+      {/* Accent top hairline */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/70 to-transparent" />
+
+      {/* Giant watermark name */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none select-none absolute -bottom-4 md:-bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap font-black tracking-tighter text-white/[0.03] text-[88px] md:text-[180px] leading-none"
+      >
+        ABDELRHMAN
       </div>
 
-      {/* Gradient animated top border */}
-      <motion.div
-        animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
-        className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500"
-        style={{ backgroundSize: '200% auto' }}
-      />
-
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
-          {/* Main Footer Content */}
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
-            {/* Brand Section */}
+
+          {/* Top row — brand + availability */}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 pt-14 pb-10 border-b border-white/[0.06]">
             <div>
               <motion.h3
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="text-2xl font-bold mb-4"
+                className="text-2xl md:text-3xl font-bold tracking-tight"
               >
-                Abdelrhman Ahmed
+                Abdelrhman<span className="text-indigo-500">.</span>
               </motion.h3>
               <motion.p
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-gray-400 leading-relaxed"
+                className="text-slate-400 mt-2 max-w-md leading-relaxed"
               >
-                Full Stack Node.js Developer passionate about creating beautiful, responsive, and user-friendly web applications with robust backend solutions.
+                Full Stack Node.js Developer — building fast, clean, end-to-end web products.
               </motion.p>
             </div>
 
-            {/* Quick Links */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="inline-flex items-center gap-2.5 self-start md:self-auto px-4 py-2 rounded-full bg-white/[0.04] border border-white/10"
+            >
+              <span className="relative flex w-2.5 h-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex rounded-full w-2.5 h-2.5 bg-emerald-400" />
+              </span>
+              <span className="text-sm font-medium text-slate-200">Available for opportunities</span>
+            </motion.div>
+          </div>
+
+          {/* Middle grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 py-12">
+            {/* Navigate */}
             <div>
-              <motion.h4
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-lg font-semibold mb-4"
-              >
-                Quick Links
-              </motion.h4>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="space-y-3"
-              >
-                {['About', 'Education', 'Projects', 'Skills', 'Contact'].map((item, index) => (
-                  <div key={item} className="overflow-hidden">
-                    <motion.button
-                      whileHover={{ x: 5 }}
-                      onClick={() => {
-                        const element = document.getElementById(item.toLowerCase());
-                        if (element) {
-                          element.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      }}
-                      className="group flex items-center text-gray-400 hover:text-white transition-colors relative"
+              <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 mb-5">Navigate</h4>
+              <ul className="space-y-3">
+                {quickLinks.map((item) => (
+                  <li key={item}>
+                    <button
+                      onClick={() => scrollTo(item.toLowerCase())}
+                      className="group text-slate-300 hover:text-white transition-colors text-sm relative"
                     >
-                      <span>{item}</span>
-                      <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-                    </motion.button>
-                  </div>
+                      {item}
+                      <span className="absolute -bottom-1 left-0 w-0 h-px bg-indigo-500 transition-all duration-300 group-hover:w-full" />
+                    </button>
+                  </li>
                 ))}
-              </motion.div>
+              </ul>
             </div>
 
-            {/* Contact Info */}
+            {/* Contact */}
             <div>
-              <motion.h4
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="text-lg font-semibold mb-4"
-              >
-                Get In Touch
-              </motion.h4>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="space-y-2 text-gray-400"
-              >
-                <p>Cairo, Egypt</p>
-                <a
-                  href="mailto:abdelrhmanahmedd2018@gmail.com"
-                  className="hover:text-white transition-colors block"
-                >
-                  abdelrhmanahmedd2018@gmail.com
-                </a>
-                <a
-                  href="tel:+201270755944"
-                  className="block hover:text-white transition-colors"
-                >
-                  +201270755944
-                </a>
-              </motion.div>
+              <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 mb-5">Contact</h4>
+              <ul className="space-y-3 text-sm">
+                <li className="text-slate-400">Cairo, Egypt</li>
+                <li>
+                  <a href="mailto:abdelrhmanahmedd2018@gmail.com" className="text-slate-300 hover:text-white transition-colors break-all">
+                    abdelrhmanahmedd2018@gmail.com
+                  </a>
+                </li>
+                <li>
+                  <a href="tel:+201270755944" className="text-slate-300 hover:text-white transition-colors">
+                    +20 127 075 5944
+                  </a>
+                </li>
+              </ul>
+            </div>
 
-              {/* Social Links */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                className="flex space-x-4 mt-6"
-              >
+            {/* Stack */}
+            <div>
+              <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 mb-5">Built with</h4>
+              <ul className="space-y-3 text-sm text-slate-400 font-mono">
+                <li>react + vite</li>
+                <li>tailwind css</li>
+                <li>framer motion</li>
+                <li>deployed on vercel</li>
+              </ul>
+            </div>
+
+            {/* Social */}
+            <div>
+              <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 mb-5">Follow</h4>
+              <div className="flex gap-3">
                 <motion.a
-                  whileHover={{ scale: 1.2, rotate: 5 }}
+                  whileHover={{ y: -3 }}
                   href="https://www.linkedin.com/in/abdelrhman-ahmed01/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-500 hover:shadow-[0_0_15px_rgba(59,130,246,0.6)] transition-all duration-300"
+                  aria-label="LinkedIn"
+                  className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/10 hover:border-indigo-400 hover:bg-indigo-600 flex items-center justify-center transition-colors duration-300"
                 >
                   <FaLinkedin />
                 </motion.a>
                 <motion.a
-                  whileHover={{ scale: 1.2, rotate: -5 }}
+                  whileHover={{ y: -3 }}
                   href="https://github.com/abdelrhmanahmed255"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 hover:shadow-[0_0_15px_rgba(156,163,175,0.6)] transition-all duration-300"
+                  aria-label="GitHub"
+                  className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/10 hover:border-indigo-400 hover:bg-indigo-600 flex items-center justify-center transition-colors duration-300"
                 >
                   <FaGithub />
                 </motion.a>
-              </motion.div>
+                <motion.a
+                  whileHover={{ y: -3 }}
+                  href="https://wa.me/201270755944"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp"
+                  className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/10 hover:border-indigo-400 hover:bg-indigo-600 flex items-center justify-center transition-colors duration-300"
+                >
+                  <FaWhatsapp />
+                </motion.a>
+                <motion.a
+                  whileHover={{ y: -3 }}
+                  href="mailto:abdelrhmanahmedd2018@gmail.com"
+                  aria-label="Email"
+                  className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/10 hover:border-indigo-400 hover:bg-indigo-600 flex items-center justify-center transition-colors duration-300"
+                >
+                  <HiMail />
+                </motion.a>
+              </div>
             </div>
           </div>
 
-          {/* Divider */}
-          <motion.div
-            initial={{ opacity: 0, scaleX: 0 }}
-            whileInView={{ opacity: 1, scaleX: 1 }}
-            transition={{ duration: 0.8 }}
-            className="border-t border-gray-700 my-8"
-          ></motion.div>
+          {/* Bottom bar */}
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 py-6 border-t border-white/[0.06]">
+            <p className="text-slate-500 text-sm">
+              © {new Date().getFullYear()} Abdelrhman Ahmed. All rights reserved.
+            </p>
 
-          {/* Bottom Section */}
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-gray-400 text-sm mb-4 md:mb-0 flex items-center"
-            >
-              © {new Date().getFullYear()} Abdelrhman Ahmed. Made with{' '}
-              <FaHeart className="text-red-500 mx-1" /> and React.js
-            </motion.p>
-
-            {/* Back to Top Button */}
             <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ y: -3 }}
+              whileTap={{ scale: 0.95 }}
               onClick={scrollToTop}
-              className="relative group bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
+              aria-label="Back to top"
+              className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white px-4 py-2 rounded-xl bg-white/[0.04] border border-white/10 hover:border-indigo-400 transition-colors duration-300"
             >
-              <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-blue-400"></span>
-              <HiArrowUp className="text-lg relative z-10" />
+              Back to top
+              <HiArrowUp />
             </motion.button>
           </div>
         </div>
