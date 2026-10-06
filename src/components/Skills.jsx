@@ -138,7 +138,7 @@ const Skills = () => {
                 <span className="w-3 h-3 rounded-full bg-slate-600" />
                 <span className="w-3 h-3 rounded-full bg-indigo-500" />
               </div>
-              <p className="font-mono text-xs text-slate-400 select-none">
+              <p className="font-mono text-[10px] md:text-xs text-slate-400 select-none truncate ml-3">
                 abdelrhman@portfolio — ~/skills
               </p>
               <span className="w-[52px]" aria-hidden="true" />

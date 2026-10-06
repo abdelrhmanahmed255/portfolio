@@ -116,10 +116,10 @@ const Scene = ({ chapter, index, total, progress }) => {
       style={{ opacity }}
       className="absolute inset-0 flex items-center justify-center px-6 md:px-16"
     >
-      <motion.div style={{ scale, y }} className="max-w-xl text-center">
+      <motion.div style={{ scale, y }} className="film-scene max-w-xl text-center">
         <span
           aria-hidden="true"
-          className="block text-[72px] md:text-[110px] font-black leading-none text-white/[0.06] select-none -mb-8 md:-mb-14"
+          className="film-ghost block text-[72px] md:text-[110px] font-black leading-none text-white/[0.06] select-none -mb-8 md:-mb-14"
         >
           {chapter.num}
         </span>
@@ -223,8 +223,14 @@ const About = () => {
       {/* ===== THE FILM =====
           Tall scroll track; the screen stays pinned while scenes play. */}
       <div ref={filmRef} className="relative" style={{ height: `${total * 100}vh` }}>
-        <div className="sticky top-0 h-screen flex items-center justify-center px-4 md:px-8">
-          <div className="relative w-full max-w-4xl h-[78vh] md:h-[80vh] max-h-[640px] rounded-3xl bg-slate-950 border border-slate-800 shadow-2xl shadow-slate-900/30 overflow-hidden">
+        <div
+          className="sticky top-0 h-screen flex items-center justify-center px-4 md:px-8"
+          style={{ height: '100svh' }}
+        >
+          <div
+            className="relative w-full max-w-4xl h-[78vh] md:h-[80vh] max-h-[640px] rounded-3xl bg-slate-950 border border-slate-800 shadow-2xl shadow-slate-900/30 overflow-hidden"
+            style={{ height: 'min(78svh, 640px)' }}
+          >
 
             {/* Ambient scene glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full bg-indigo-600/15 blur-[90px] pointer-events-none" />
