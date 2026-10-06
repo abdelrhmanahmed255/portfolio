@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { HiMail, HiPhone, HiLocationMarker, HiCode, HiLightBulb, HiSparkles } from 'react-icons/hi';
-import { FaLinkedin, FaGithub, FaReact, FaJs, FaCss3Alt, FaNodeJs } from 'react-icons/fa';
+import { HiArrowRight } from 'react-icons/hi';
 
 const AnimatedCounter = ({ end, suffix }) => {
   const [count, setCount] = useState(0);
@@ -13,7 +12,7 @@ const AnimatedCounter = ({ end, suffix }) => {
       let start = 0;
       const duration = 1500;
       const increment = end / (duration / 16);
-      
+
       const timer = setInterval(() => {
         start += increment;
         if (start >= end) {
@@ -23,7 +22,7 @@ const AnimatedCounter = ({ end, suffix }) => {
           setCount(Math.floor(start));
         }
       }, 16);
-      
+
       return () => clearInterval(timer);
     }
   }, [inView, end]);
@@ -31,246 +30,300 @@ const AnimatedCounter = ({ end, suffix }) => {
   return <span ref={ref}>{count}{suffix}</span>;
 };
 
-const About = () => {
-  const stats = [
-    { number: 1, suffix: "+", label: "Year Experience", icon: HiCode },
-    { number: 10, suffix: "+", label: "Projects Completed", icon: HiLightBulb },
-    { number: 3, suffix: "+", label: "Technologies Mastered", icon: HiSparkles }
-  ];
+// Masked word-by-word reveal for the opening line
+const WordsReveal = ({ text, className = '', delay = 0 }) => {
+  const words = text.split(' ');
+  return (
+    <span className={className}>
+      {words.map((word, i) => (
+        <span key={i} className="inline-block overflow-hidden align-bottom pb-1">
+          <motion.span
+            className="inline-block"
+            initial={{ y: '110%' }}
+            whileInView={{ y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: delay + i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {word}{i < words.length - 1 ? ' ' : ''}
+          </motion.span>
+        </span>
+      ))}
+    </span>
+  );
+};
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
+const chapters = [
+  {
+    num: '01',
+    tag: 'Where it began',
+    title: 'The Spark',
+    text: "At Zagazig University, I opened the browser dev tools for the first time — and couldn't stop digging. What started as curiosity about how pages are built turned into late nights rebuilding interfaces from scratch, just to understand every moving piece.",
+    chips: ['HTML', 'CSS', 'JavaScript']
+  },
+  {
+    num: '02',
+    tag: 'Learning the craft',
+    title: 'Mastering the Frontend',
+    text: "I went deep into React — component thinking, state, pixel-accurate layouts. Between Route Academy's diplomas and real client work for Murashah in Saudi Arabia, I learned that good UI isn't decoration. It's how people actually experience software.",
+    chips: ['React', 'Next.js', 'Tailwind CSS']
+  },
+  {
+    num: '03',
+    tag: 'Owning the whole flow',
+    title: 'Going Full Stack',
+    text: "The frontend alone wasn't enough — I wanted to own the request from click to database. So I moved into Node.js: REST and GraphQL APIs, authentication, payments, data modeling. Now a feature isn't done until it works end to end.",
+    chips: ['Node.js', 'Express', 'MongoDB']
+  },
+  {
+    num: '04',
+    tag: 'The current chapter',
+    title: 'Building Real Products',
+    text: "Today I build full-stack products at Taqdum Software Technology — like Pupilera, a school management SaaS — and ship platforms used in Egypt and Saudi Arabia. Clean code, real performance, interfaces people enjoy. That's the standard I hold.",
+    chips: ['Next.js', 'TypeScript', 'NestJS']
+  }
+];
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
+const stats = [
+  { number: 2, suffix: '+', label: 'Years Experience' },
+  { number: 10, suffix: '+', label: 'Projects Shipped' },
+  { number: 15, suffix: '+', label: 'Technologies Used' }
+];
+
+/*
+ * One "scene" of the story film. All scenes are stacked absolutely inside the
+ * sticky screen; scroll progress cross-fades them with a slow cinematic zoom.
+ */
+const Scene = ({ chapter, index, total, progress }) => {
+  const start = index / total;
+  const end = (index + 1) / total;
+  const fade = 0.045;
+
+  const opacity = useTransform(
+    progress,
+    index === 0
+      ? [start, start + 0.001, end - fade, end]
+      : index === total - 1
+      ? [start, start + fade, end - 0.001, end]
+      : [start, start + fade, end - fade, end],
+    index === 0 ? [1, 1, 1, 0] : index === total - 1 ? [0, 1, 1, 1] : [0, 1, 1, 0]
+  );
+  // Ken Burns style slow zoom + drift while the scene plays
+  const scale = useTransform(progress, [start, end], [1, 1.05]);
+  const y = useTransform(progress, [start, end], [12, -12]);
 
   return (
-    <section id="about" className="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-10 left-4 md:top-20 md:left-10 w-32 h-32 md:w-72 md:h-72 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 md:opacity-30 animate-pulse"></div>
-        <div className="absolute top-20 right-4 md:top-40 md:right-10 w-24 h-24 md:w-72 md:h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 md:opacity-30 animate-pulse"></div>
-        <div className="absolute -bottom-16 left-8 md:-bottom-32 md:left-20 w-28 h-28 md:w-72 md:h-72 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 md:opacity-30 animate-pulse"></div>
-      </div>
+    <motion.div
+      style={{ opacity }}
+      className="absolute inset-0 flex items-center justify-center px-6 md:px-16"
+    >
+      <motion.div style={{ scale, y }} className="max-w-xl text-center">
+        <span
+          aria-hidden="true"
+          className="block text-[72px] md:text-[110px] font-black leading-none text-white/[0.06] select-none -mb-8 md:-mb-14"
+        >
+          {chapter.num}
+        </span>
+        <p className="text-indigo-400 text-[11px] md:text-xs font-semibold uppercase tracking-[0.25em] mb-3">
+          {chapter.tag}
+        </p>
+        <h3 className="text-2xl md:text-4xl font-bold text-white mb-4 md:mb-5 tracking-tight">
+          {chapter.title}
+        </h3>
+        <p className="text-slate-300 text-sm md:text-lg leading-relaxed mb-5 md:mb-6">
+          {chapter.text}
+        </p>
+        <div className="flex flex-wrap justify-center gap-2">
+          {chapter.chips.map((chip) => (
+            <span
+              key={chip}
+              className="px-3 py-1 text-[11px] md:text-xs font-mono font-medium rounded-md bg-white/[0.06] border border-white/10 text-slate-300"
+            >
+              {chip}
+            </span>
+          ))}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <motion.div 
+const About = () => {
+  const filmRef = useRef(null);
+  const [activeScene, setActiveScene] = useState(0);
+  const total = chapters.length;
+
+  // Film plays while the tall container scrolls under the sticky screen
+  const { scrollYProgress } = useScroll({
+    target: filmRef,
+    offset: ['start start', 'end end']
+  });
+  const playhead = useSpring(scrollYProgress, { stiffness: 120, damping: 28, restDelta: 0.001 });
+
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    const idx = Math.min(total - 1, Math.max(0, Math.floor(v * total)));
+    setActiveScene(idx);
+  });
+
+  return (
+    <section id="about" className="bg-slate-50 relative">
+      {/* Section Header + opening line */}
+      <div className="container mx-auto px-6 pt-20 md:pt-28">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="text-center mb-12 md:mb-16"
           >
-            <span className="inline-block px-3 py-1 md:px-4 md:py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-xs md:text-sm font-medium mb-3 md:mb-4 border border-blue-200">
-              Get to know me
+            <span className="inline-block text-indigo-600 text-xs font-semibold uppercase tracking-[0.25em] mb-4">
+              My Story
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold text-gray-800 mb-4 md:mb-6 px-4">
-              About{' '}
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
-                Me
-              </span>
-            </h2>
-            <motion.div 
+            <motion.h2
+              initial={{ clipPath: 'inset(0 100% 0 0)' }}
+              whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, ease: [0.77, 0, 0.175, 1], delay: 0.1 }}
+              className="text-3xl md:text-5xl font-bold text-slate-900 mb-5 px-4 tracking-tight"
+            >
+              From Curiosity to <span className="text-indigo-600">Craft</span>
+            </motion.h2>
+            <motion.div
               initial={{ width: 0 }}
-              whileInView={{ width: "6rem" }}
+              whileInView={{ width: '3rem' }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"
-            ></motion.div>
+              className="h-[3px] bg-indigo-600 mx-auto rounded-full"
+            />
           </motion.div>
 
-          {/* Stats Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -5, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}
-                className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 text-center shadow-lg border border-gray-100"
-              >
-                <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl md:rounded-2xl mb-3 md:mb-4">
-                  <stat.icon className="text-white text-lg md:text-2xl" />
-                </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-1 md:mb-2">
-                  <AnimatedCounter end={stat.number} suffix={stat.suffix} />
-                </h3>
-                <p className="text-gray-600 font-medium text-sm md:text-base">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
-            {/* Left side - Content */}
-            <motion.div 
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
+          <div className="text-center mb-10 md:mb-14">
+            <WordsReveal
+              text="Every developer has a story. Mine started with one question:"
+              className="block text-slate-500 text-lg md:text-xl mb-3"
+            />
+            <WordsReveal
+              text="How does the web actually work?"
+              className="block text-2xl md:text-4xl font-bold text-slate-900 tracking-tight"
+              delay={0.5}
+            />
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="space-y-6 md:space-y-8"
+              transition={{ delay: 1.2, duration: 0.6 }}
+              className="mt-6 text-xs font-semibold uppercase tracking-[0.25em] text-slate-400"
             >
-              <div>
-                <motion.h3 variants={itemVariants} className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 md:mb-6 flex items-center">
-                  <span className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg mr-2 md:mr-3"></span>
-                  My Journey
-                </motion.h3>
-                <div className="space-y-4 md:space-y-6">
-                  <motion.p variants={itemVariants} className="text-gray-600 text-base md:text-lg leading-relaxed">
-                    I'm a passionate <span className="font-semibold text-blue-600">Full Stack Node.js Developer</span> with a love for creating 
-                    stunning, user-centric web experiences. My journey began with curiosity about how websites work, 
-                    and it has evolved into a dedicated pursuit of crafting digital solutions that make a difference.
-                  </motion.p>
-                  <motion.p variants={itemVariants} className="text-gray-600 text-base md:text-lg leading-relaxed">
-                    With a strong foundation in <span className="font-semibold text-purple-600">modern JavaScript frameworks and Node.js</span>, and a keen eye for design, I specialize in building full stack, responsive, accessible, and performant web applications. I believe in writing clean, maintainable code and staying current with the latest industry trends.
-                  </motion.p>
-                  <motion.p variants={itemVariants} className="text-gray-600 text-base md:text-lg leading-relaxed">
-                    When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, 
-                    or sharing knowledge with the developer community. I'm always excited about the next challenge and 
-                    the opportunity to bring innovative ideas to life.
-                  </motion.p>
-                </div>
-              </div>
+              Scroll to play ▾
+            </motion.p>
+          </div>
+        </div>
+      </div>
 
-              {/* Technologies */}
-              <motion.div variants={itemVariants}>
-                <h4 className="text-lg md:text-xl font-bold text-gray-800 mb-3 md:mb-4">Technologies I Love</h4>
-                <div className="flex flex-wrap gap-2 md:gap-3">
-                  {[
-                    { name: "Node.js", icon: FaNodeJs, color: "text-green-500" },
-                    { name: "React.js", icon: FaReact, color: "text-blue-500" },
-                    { name: "JavaScript", icon: FaJs, color: "text-yellow-500" },
-                    { name: "CSS3", icon: FaCss3Alt, color: "text-blue-600" }
-                  ].map((tech, index) => (
-                    <motion.div
-                      key={index}
-                      whileHover={{ y: -4, boxShadow: "0px 10px 20px rgba(0,0,0,0.1), 0px 4px 6px rgba(0,0,0,0.05)" }}
-                      className="flex items-center bg-white px-3 py-2 md:px-4 md:py-2 rounded-full shadow-md border border-gray-100 transition-all cursor-default"
-                    >
-                      <tech.icon className={`${tech.color} text-base md:text-lg mr-1 md:mr-2`} />
-                      <span className="text-gray-700 font-medium text-sm md:text-base">{tech.name}</span>
-                    </motion.div>
+      {/* ===== THE FILM =====
+          Tall scroll track; the screen stays pinned while scenes play. */}
+      <div ref={filmRef} className="relative" style={{ height: `${total * 100}vh` }}>
+        <div className="sticky top-0 h-screen flex items-center justify-center px-4 md:px-8">
+          <div className="relative w-full max-w-4xl h-[78vh] md:h-[80vh] max-h-[640px] rounded-3xl bg-slate-950 border border-slate-800 shadow-2xl shadow-slate-900/30 overflow-hidden">
+
+            {/* Ambient scene glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full bg-indigo-600/15 blur-[90px] pointer-events-none" />
+
+            {/* Player top bar */}
+            <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-5 md:px-7 py-4 z-20">
+              <div className="flex items-center gap-2.5">
+                <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+                <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] text-slate-400">
+                  Now playing — My Story
+                </span>
+              </div>
+              <span className="font-mono text-[10px] md:text-xs text-slate-500 tabular-nums">
+                CH {chapters[activeScene].num} / 0{total}
+              </span>
+            </div>
+
+            {/* Scenes */}
+            {chapters.map((chapter, index) => (
+              <Scene
+                key={chapter.num}
+                chapter={chapter}
+                index={index}
+                total={total}
+                progress={scrollYProgress}
+              />
+            ))}
+
+            {/* Player bottom bar — scrubber with chapter markers */}
+            <div className="absolute bottom-0 left-0 right-0 px-5 md:px-7 pb-5 z-20">
+              <div className="relative h-1 rounded-full bg-white/10 overflow-hidden">
+                <motion.div
+                  style={{ scaleX: playhead }}
+                  className="absolute inset-0 bg-indigo-500 origin-left rounded-full"
+                />
+              </div>
+              {/* Chapter tick markers */}
+              <div className="relative mt-2 flex justify-between">
+                {chapters.map((chapter, index) => (
+                  <span
+                    key={chapter.num}
+                    className={`font-mono text-[9px] md:text-[10px] tracking-wider transition-colors duration-300 ${
+                      index === activeScene ? 'text-indigo-400' : 'text-slate-600'
+                    }`}
+                  >
+                    {chapter.num}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Story ending — the numbers so far */}
+      <div className="container mx-auto px-6 pb-20 md:pb-28 pt-12 md:pt-16">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="bg-slate-900 rounded-3xl px-8 py-10 md:px-14 md:py-12 relative overflow-hidden">
+              <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-indigo-600/20 blur-3xl pointer-events-none" />
+
+              <div className="relative z-10">
+                <p className="text-indigo-400 text-xs font-semibold uppercase tracking-[0.25em] mb-6 text-center">
+                  The story so far
+                </p>
+
+                <div className="grid grid-cols-3 gap-4 md:gap-8 mb-10">
+                  {stats.map((stat) => (
+                    <div key={stat.label} className="text-center">
+                      <p className="text-3xl md:text-5xl font-extrabold text-white mb-1">
+                        <AnimatedCounter end={stat.number} suffix={stat.suffix} />
+                      </p>
+                      <p className="text-slate-400 text-xs md:text-sm font-medium">{stat.label}</p>
+                    </div>
                   ))}
                 </div>
-              </motion.div>
 
-              {/* Quick Info */}
-              <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 md:p-6 rounded-xl hover:shadow-md transition-shadow">
-                  <h4 className="font-bold text-gray-800 mb-1 md:mb-2 text-sm md:text-base">Education</h4>
-                  <p className="text-gray-700 font-medium text-sm md:text-base">Bachelor of Information Technology</p>
-                  <p className="text-gray-500 text-xs md:text-sm">Zagazig University</p>
-                </div>
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 md:p-6 rounded-xl hover:shadow-md transition-shadow">
-                  <h4 className="font-bold text-gray-800 mb-1 md:mb-2 text-sm md:text-base">Experience</h4>
-                  <p className="text-gray-700 font-medium text-sm md:text-base">2+ Years</p>
-                  <p className="text-gray-500 text-xs md:text-sm">Full Stack Development</p>
-                </div>
-              </motion.div>
-            </motion.div>
-
-            {/* Right side - Contact Card */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mt-8 lg:mt-0 relative group p-[2px] rounded-2xl md:rounded-3xl"
-            >
-              {/* Gradient Border Glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-500"></div>
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              <div className="bg-gradient-to-br from-white to-gray-50 p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-2xl relative z-10 overflow-hidden h-full">
-                {/* Background decoration */}
-                <div className="absolute top-0 right-0 w-20 h-20 md:w-32 md:h-32 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full -translate-y-10 md:-translate-y-16 translate-x-10 md:translate-x-16"></div>
-                
-                <div className="relative z-10">
-                  <div className="flex items-center mb-4 md:mb-6">
-                    <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl md:rounded-2xl flex items-center justify-center mr-3 md:mr-4">
-                      <HiMail className="text-white text-lg md:text-xl" />
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-bold text-gray-800">
-                      Let's Connect
-                    </h3>
-                  </div>
-                  
-                  <p className="text-gray-600 mb-6 md:mb-8 leading-relaxed text-sm md:text-base">
-                    I'm always excited to discuss new opportunities, collaborate on interesting projects, 
-                    or simply chat about the latest in web development.
+                <div className="text-center">
+                  <p className="text-slate-300 text-lg md:text-xl font-medium mb-6">
+                    The next chapter? It could be <span className="text-indigo-400">your project</span>.
                   </p>
-                  
-                  <div className="space-y-4 md:space-y-6">
-                    <div className="flex items-center p-3 md:p-4 rounded-xl hover:bg-blue-50 transition-all duration-300">
-                      <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-3 md:mr-4 flex-shrink-0">
-                        <HiMail className="text-blue-600 text-lg md:text-xl" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-gray-800 text-sm md:text-base">Email</p>
-                        <p className="text-gray-600 text-xs md:text-sm break-all">abdelrhmanahmedd2018@gmail.com</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center p-3 md:p-4 rounded-xl hover:bg-green-50 transition-all duration-300">
-                      <div className="w-10 h-10 md:w-12 md:h-12 bg-green-100 rounded-xl flex items-center justify-center mr-3 md:mr-4 flex-shrink-0">
-                        <HiPhone className="text-green-600 text-lg md:text-xl" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-gray-800 text-sm md:text-base">Phone</p>
-                        <p className="text-gray-600 text-xs md:text-sm">+201270755944</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center p-3 md:p-4 rounded-xl hover:bg-purple-50 transition-all duration-300">
-                      <div className="w-10 h-10 md:w-12 md:h-12 bg-purple-100 rounded-xl flex items-center justify-center mr-3 md:mr-4 flex-shrink-0">
-                        <HiLocationMarker className="text-purple-600 text-lg md:text-xl" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-gray-800 text-sm md:text-base">Location</p>
-                        <p className="text-gray-600 text-xs md:text-sm">Cairo, Egypt</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-gray-200">
-                    <h4 className="font-semibold text-gray-800 mb-3 md:mb-4 text-sm md:text-base">Follow me</h4>
-                    <div className="flex space-x-3 md:space-x-4">
-                      <motion.a
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        href="https://www.linkedin.com/in/abdelrhman-ahmed01/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-3 md:p-4 rounded-xl shadow-lg transition-all duration-300"
-                      >
-                        <FaLinkedin className="text-lg md:text-xl" />
-                      </motion.a>
-                      <motion.a
-                        whileHover={{ scale: 1.1, rotate: -5 }}
-                        href="https://github.com/abdelrhmanahmed255"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-gradient-to-r from-gray-700 to-gray-800 text-white p-3 md:p-4 rounded-xl shadow-lg transition-all duration-300"
-                      >
-                        <FaGithub className="text-lg md:text-xl" />
-                      </motion.a>
-                    </div>
-                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-7 py-3.5 rounded-xl transition-colors duration-300"
+                  >
+                    Let's write it together
+                    <HiArrowRight />
+                  </motion.button>
                 </div>
               </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
