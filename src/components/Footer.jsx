@@ -22,7 +22,7 @@ const Footer = () => {
       {/* Giant watermark name */}
       <div
         aria-hidden="true"
-        className="pointer-events-none select-none absolute -bottom-4 md:-bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap font-black tracking-tighter text-white/[0.03] text-[88px] md:text-[180px] leading-none"
+        className="pointer-events-none select-none absolute -bottom-2 md:-bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap font-black tracking-tighter text-white/[0.03] text-[56px] sm:text-[88px] md:text-[180px] leading-none"
       >
         ABDELRHMAN
       </div>
@@ -68,8 +68,8 @@ const Footer = () => {
             </motion.div>
           </div>
 
-          {/* Middle grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 py-12">
+          {/* Middle grid — single column on small phones so nothing cramps */}
+          <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10 py-10 md:py-12">
             {/* Navigate */}
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 mb-5">Navigate</h4>
