@@ -99,7 +99,7 @@ const Contact = () => {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="bg-slate-900 rounded-3xl px-6 py-8 md:px-12 md:py-10 relative overflow-hidden"
           >
-            <div className="absolute -top-20 -right-20 w-56 h-56 rounded-full bg-indigo-600/20 blur-3xl pointer-events-none" />
+            <div className="absolute -top-44 -right-44 w-[26rem] h-[26rem] bg-[radial-gradient(closest-side,rgba(79,70,229,0.2)_20%,transparent)] pointer-events-none" />
 
             <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6 md:gap-10">
               <div className="text-center md:text-left">

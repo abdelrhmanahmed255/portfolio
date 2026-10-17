@@ -232,8 +232,8 @@ const About = () => {
             style={{ height: 'min(78svh, 640px)' }}
           >
 
-            {/* Ambient scene glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full bg-indigo-600/15 blur-[90px] pointer-events-none" />
+            {/* Ambient scene glow (radial gradient — a blur() filter here draws a black box on iOS Safari) */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(closest-side,rgba(79,70,229,0.15)_35%,transparent)] pointer-events-none" />
 
             {/* Player top bar */}
             <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-5 md:px-7 py-4 z-20">

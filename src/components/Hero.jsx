@@ -91,25 +91,28 @@ const Hero = () => {
       id="hero" 
       className="min-h-screen relative bg-slate-900 overflow-hidden"
     >
-      {/* 1. Aurora gradient mesh background */}
+      {/* 1. Aurora gradient mesh background.
+          Blobs are radial gradients, not filter: blur() — iOS Safari paints a
+          black square at the top-left of the screen when a blurred element is
+          off-screen (WebKit bug 314999). Keep filters off decorative glows. */}
       <motion.div className="absolute inset-0 z-0">
-        <motion.div 
-          className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-600/30 rounded-full blur-[120px]"
+        <motion.div
+          className="absolute top-[-25%] left-[-30%] w-[90%] h-[80%] bg-[radial-gradient(closest-side,rgba(79,70,229,0.3),transparent)]"
           animate={{ x: [0, 25, 0], y: [0, 15, 0], scale: [1, 1.1, 1] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div 
-          className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-purple-600/20 rounded-full blur-[120px]"
+        <motion.div
+          className="absolute top-[5%] right-[-30%] w-full h-[90%] bg-[radial-gradient(closest-side,rgba(147,51,234,0.2),transparent)]"
           animate={{ x: [0, -25, 0], y: [0, 25, 0], scale: [1, 1.2, 1] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div 
-          className="hidden md:block absolute bottom-[-10%] left-[20%] w-[50%] h-[50%] bg-blue-600/20 rounded-full blur-[120px]"
+        <motion.div
+          className="hidden md:block absolute bottom-[-25%] left-0 w-[90%] h-[80%] bg-[radial-gradient(closest-side,rgba(37,99,235,0.2),transparent)]"
           animate={{ x: [0, 15, 0], y: [0, -25, 0], scale: [1, 1.3, 1] }}
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div 
-          className="hidden md:block absolute bottom-[10%] right-[10%] w-[40%] h-[40%] bg-pink-600/20 rounded-full blur-[120px]"
+        <motion.div
+          className="hidden md:block absolute bottom-[-5%] right-[-5%] w-[70%] h-[70%] bg-[radial-gradient(closest-side,rgba(219,39,119,0.2),transparent)]"
           animate={{ x: [0, -15, 0], y: [0, 15, 0], scale: [1, 1.1, 1] }}
           transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
         />
@@ -310,7 +313,7 @@ const Hero = () => {
             >
               <div className="relative">
                 {/* Glowing background circle */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-purple-500/30 rounded-full blur-2xl" />
+                <div className="absolute -inset-16 bg-[radial-gradient(closest-side,rgba(113,107,246,0.3)_50%,transparent)]" />
                 
                 {/* Photo container */}
                 <div className="relative w-80 h-80 md:w-96 md:h-96 hover:-translate-y-2 transition-transform duration-500">

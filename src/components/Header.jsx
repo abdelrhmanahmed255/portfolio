@@ -193,11 +193,11 @@ const Header = () => {
             initial="closed"
             animate="open"
             exit="closed"
-            className="md:hidden fixed inset-0 z-[60] bg-slate-950 flex flex-col"
+            className="md:hidden fixed inset-0 z-[60] bg-slate-950 flex flex-col overflow-hidden"
             style={{ height: '100dvh' }}
           >
-            {/* Subtle glow */}
-            <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-indigo-600/15 blur-3xl pointer-events-none" />
+            {/* Subtle glow (radial gradient, not blur() — see Hero aurora) */}
+            <div className="absolute -top-16 -right-16 w-[26rem] h-[26rem] bg-[radial-gradient(closest-side,rgba(79,70,229,0.15)_30%,transparent)] pointer-events-none" />
 
             {/* Nav links */}
             <nav className="flex-1 flex flex-col justify-center px-8 pt-16">
